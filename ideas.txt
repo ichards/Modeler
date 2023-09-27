@@ -1,0 +1,1 @@
+*when selecting where to put point on axis, left click will place point and right point will produce another 2 axes where you can then select one and continue changing the location until you get a left click. (idk if left or right click to pick new axis)
