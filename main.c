@@ -24,29 +24,15 @@ Vector3 absolutify(Vector3 v) {
 }
 	
 
+
 // draws grid
 void draw_grid(Vector3 center, int lines_no, float unit_size, Vector3 up, Color grid_color) {
-	/*
-    for (int i = -(lines_no/2); i<= lines_no/2; i++) {
-        DrawLine3D(Vector3RotateByAxisAngle(V3(center.x + (i*unit_size), center.y, center.z-((lines_no/2) * unit_size)), V3(1, 0, 0), PI / 2),
-        Vector3RotateByAxisAngle(V3(center.x + (i*unit_size), center.y, center.z+((lines_no/2) * unit_size)), V3(1, 0, 0), PI / 2),
-        grid_color);
-        
-        DrawLine3D(Vector3RotateByAxisAngle(V3(center.x-((lines_no/2) * unit_size), center.y, center.z + (i*unit_size)), V3(1, 0, 0), PI / 2),
-        Vector3RotateByAxisAngle(V3(center.x+((lines_no/2) * unit_size), center.y, center.z + (i*unit_size)), V3(1, 0, 0), PI / 2),
-        grid_color);
-    }
-	*/
-	
-	for (int i= -(lines_no/2); i<= lines_no/2; i++) {
-		//DrawLine3D(Vector3RotateByAxisAngle( V3(center.x - lines_no/2, center.y + 0, center.z + i), up, 90) , Vector3RotateByAxisAngle(V3(center.x + lines_no/2, center.y + 0, center.z + i), up, 90), grid_color);
-		//DrawLine3D(V3(center.x + i, center.y + 0, center.z - lines_no/2), V3(center.x + i, center.y + 0, center.z + lines_no/2), grid_color);
 		
+	for (int i= -(lines_no/2); i<= lines_no/2; i++) {			
 		DrawLine3D(V3(center.x + (i * up.x), center.y - ((lines_no/2) * up.y), center.z - ((lines_no/2) * up.z)), V3(center.x + (i * up.x), center.y + ((lines_no/2) * up.y), center.z + ((lines_no/2) * up.z)), grid_color);
 		DrawLine3D(V3(center.x - ((lines_no/2) * up.x), center.y + (i * up.y), center.z - ((lines_no/2) * up.z)), V3(center.x + ((lines_no/2) * up.x), center.y + (i * up.y), center.z + ((lines_no/2) * up.z)), grid_color);
 		DrawLine3D(V3(center.x - ((lines_no/2) * up.x), center.y - ((lines_no/2) * up.y), center.z + (i * up.z)), V3(center.x + ((lines_no/2) * up.x), center.y + ((lines_no/2) * up.y), center.z + (i * up.z)), grid_color);
-	}
-	
+	}	
 	
 }
 
@@ -62,11 +48,6 @@ void draw_y_axis(Vector3 center, int lines_no, float unit_size) {
     for (int i= -(lines_no/2); i<=lines_no/2; i++) {
         DrawLine3D(V3(center.x - (unit_size / 2), center.y + (i * unit_size), center.z), V3(center.x + (unit_size / 2), center.y + (i * unit_size), center.z), BLACK);
         DrawLine3D(V3(center.x, center.y + (i * unit_size), center.z - (unit_size / 2)), V3(center.x, center.y + (i * unit_size), center.z + (unit_size / 2)), BLACK);
-        //for (int j = 1; j<=9; j++) {
-            //DrawLine3D(V3(center.x - (unit_size / 10), center.y + (i * unit_size + j * (unit_size / 10)), center.z), V3(center.x + (unit_size / 10), center.y + (i * unit_size + j * (unit_size / 10)), center.z), BLACK);
-            //DrawLine3D(V3(center.x, center.y + (i * unit_size + j * (unit_size / 10)), center.z - (unit_size / 10)), V3(center.x, center.y + (i * unit_size + j * (unit_size / 10)), center.z + (unit_size / 10)), BLACK);
-            //DrawSphere(V3(0, center.y + (i * unit_size + j * (unit_size / 10)), 0), 0.01, BLACK);
-        //}
     }
 }
 
@@ -286,9 +267,7 @@ void POINT_SELECT_FUNCTION(program_data data) {
             // DRAW MAIN GRID
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
             if (axis_collision.hit) {
-                //DrawSphere(axis_collision.point, 0.5, BLACK);
                 DrawSphere(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 0.25, BLACK);
-                //draw_grid(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 5, 1, Vector3Subtract(V3(1, 1, 1), absolutify(Vector3Normalize(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z))))), BLACK);
                 draw_grid(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 5, 1, up, BLACK);
 
             }
@@ -338,7 +317,6 @@ int main(void)
 
     RenderTexture2D corner_render = LoadRenderTexture(screenWidth / 8, screenWidth / 8);
 
-    //void (*view_fun) (Camera*, Camera*, RenderTexture2D*, const int*, const int*, STATE*);
 
     STATE_FUNCTION view_fun;
 
@@ -349,13 +327,13 @@ int main(void)
 
     Vector3 save_vector = V3(0, 0, 0);
 
+    program_data p_program_data = (program_data) {&screenWidth, &screenHeight, &camera, &mini_camera, &corner_render, &mode, all_points, &save_vector};
+
     // MAIN LOOP
     while (!WindowShouldClose())
     {
 
-        //view_fun(&camera, &mini_camera, &corner_render, &screenWidth, &screenHeight, &mode);
-        //mode_functions[mode](&camera, &mini_camera, &corner_render, &screenWidth, &screenHeight, &mode);
-        mode_functions[mode]((program_data) {&screenWidth, &screenHeight, &camera, &mini_camera, &corner_render, &mode, all_points, &save_vector});
+        mode_functions[mode](p_program_data);
 
     }
 
