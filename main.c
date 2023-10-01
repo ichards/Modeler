@@ -57,6 +57,7 @@ void draw_y_axis(Vector3 center, int lines_no, float unit_size) {
     }
 }
 
+// INITIALIZE STATES 
 typedef enum {
     VIEW_MODE = 0,
     POINT_MODE_SELECT,
@@ -65,6 +66,13 @@ typedef enum {
 
 const int STATE_COUNT = 3;
 
+const Color STATE_COLORS[] = {
+	BLACK,	// VIEW_MODE
+	RED,	// POINT_MODE_SELECT
+	PURPLE	// POINT_MODE_PLACE
+};
+
+// DECLARING PROGRAM DATA
 typedef struct {
     const int* window_width;
     const int* window_height;
@@ -75,6 +83,9 @@ typedef struct {
     Vector3* all_points;
     Vector3* save_vector;
 } program_data;
+
+
+// RUN FUNCTIONS
 
 //void VIEW_FUNCTION(Camera* camera, Camera *mini_camera, RenderTexture2D* corner_render, const int* screenWidth, const int* screenHeight, STATE* mode) {
 void VIEW_FUNCTION(program_data data) {
@@ -184,7 +195,9 @@ void VIEW_FUNCTION(program_data data) {
     // DRAW MAIN SCREEN
     BeginDrawing();
 
-        ClearBackground(GRAY);
+    	ClearBackground(STATE_COLORS[*(data.program_state)]);
+
+	DrawRectangle(10, 10, *(data.window_width) - 20, *(data.window_height) - 20, GRAY);
 
         BeginMode3D(*data.main_camera);
 
@@ -265,7 +278,9 @@ void POINT_SELECT_FUNCTION(program_data data) {
     // DRAW MAIN SCREEN
     BeginDrawing();
 
-        ClearBackground(GRAY);
+    	ClearBackground(STATE_COLORS[*(data.program_state)]);
+
+	DrawRectangle(10, 10, *(data.window_width) - 20, *(data.window_height) - 20, GRAY);
 
         BeginMode3D(*data.main_camera);
 
