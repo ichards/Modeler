@@ -4,7 +4,8 @@
 
 // convenient functions for making vectors/colors
 #define V3(x, y, z) ((Vector3) {(float) x, (float) y, (float) z})
-#define C4(r, g, b, a) ((Color){r, g, b, a})
+#define C4(r, g, b, a) ((Color) {r, g, b, a})
+
 
 Vector3 absolutify(Vector3 v) {
 	Vector3 buffer;
@@ -22,18 +23,23 @@ Vector3 absolutify(Vector3 v) {
 	}
 	return buffer;
 }
-	
-
 
 // draws grid
-void draw_grid(Vector3 center, int lines_no, float unit_size, Vector3 up, Color grid_color) {
-		
-	for (int i= -(lines_no/2); i<= lines_no/2; i++) {			
-		DrawLine3D(V3(center.x + (i * up.x), center.y - ((lines_no/2) * up.y), center.z - ((lines_no/2) * up.z)), V3(center.x + (i * up.x), center.y + ((lines_no/2) * up.y), center.z + ((lines_no/2) * up.z)), grid_color);
-		DrawLine3D(V3(center.x - ((lines_no/2) * up.x), center.y + (i * up.y), center.z - ((lines_no/2) * up.z)), V3(center.x + ((lines_no/2) * up.x), center.y + (i * up.y), center.z + ((lines_no/2) * up.z)), grid_color);
-		DrawLine3D(V3(center.x - ((lines_no/2) * up.x), center.y - ((lines_no/2) * up.y), center.z + (i * up.z)), V3(center.x + ((lines_no/2) * up.x), center.y + ((lines_no/2) * up.y), center.z + (i * up.z)), grid_color);
-	}	
-	
+// instead of drawing grid now, it will draw the 2 complementary axes
+void draw_grid(Vector3 center, int lines_no, float unit_size, Vector3 up, Color grid_color) {	
+	if (up.x == 1) DrawLine3D(
+			V3(center.x - (unit_size * lines_no), center.y, center.z),
+			V3(center.x + (unit_size * lines_no), center.y, center.z),
+			grid_color);
+	if (up.y == 1) DrawLine3D(
+			V3(center.x, center.y + (unit_size * lines_no), center.z),
+			V3(center.x, center.y - (unit_size * lines_no), center.z),
+			grid_color);
+	if (up.z == 1) DrawLine3D(
+			V3(center.x, center.y, center.z + (unit_size * lines_no)),
+			V3(center.x, center.y, center.z - (unit_size * lines_no)),
+			grid_color);
+
 }
 
 void draw_axis(Vector3 center, int unit_no, Color x, Color y, Color z) {
@@ -58,7 +64,6 @@ typedef enum {
 } STATE;
 
 const int STATE_COUNT = 3;
-
 
 typedef struct {
     const int* window_width;
@@ -317,7 +322,6 @@ int main(void)
 
     RenderTexture2D corner_render = LoadRenderTexture(screenWidth / 8, screenWidth / 8);
 
-
     STATE_FUNCTION view_fun;
 
     view_fun = &VIEW_FUNCTION;
@@ -338,6 +342,7 @@ int main(void)
     }
 
     CloseWindow();
-
+ 
     return 0;
 }
+
