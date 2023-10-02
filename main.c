@@ -39,7 +39,6 @@ void draw_grid(Vector3 center, int lines_no, float unit_size, Vector3 up, Color 
 			V3(center.x, center.y, center.z + (unit_size * lines_no)),
 			V3(center.x, center.y, center.z - (unit_size * lines_no)),
 			grid_color);
-
 }
 
 void draw_axis(Vector3 center, int unit_no, Color x, Color y, Color z) {
