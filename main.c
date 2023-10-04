@@ -226,6 +226,17 @@ void POINT_SELECT_FUNCTION(program_data data) {
     //RayCollision y_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-0.5, -10, -0.5), V3(0.5, 10, 0.5)});
     RayCollision axis_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {Vector3Multiply(V3(-0.5, -0.5, -0.5), *data.save_vector), Vector3Multiply(V3(0.5, 0.5, 0.5), *data.save_vector)});
 
+    // make a visual sphere that shows where the user is selecting (assuming clip to nearest whole value)
+    Vector3 input_point = V3(0, 0, 0);
+    if (axis_collision.hit) {
+	Vector3 signs = V3(((axis_collision.point.x > 0) - (axis_collision.point.x < 0)) * (data.save_vector->x == 20),
+			((axis_collision.point.y > 0) - (axis_collision.point.y < 0)) * (data.save_vector->y == 20),
+			((axis_collision.point.z > 0) - (axis_collision.point.z < 0)) * (data.save_vector->z == 20));
+	input_point = V3((int)(axis_collision.point.x + (0.5 * signs.x)),(int)(axis_collision.point.y + (0.5 * signs.y)),(int)(axis_collision.point.z + (0.5 * signs.z)));
+	//input_point = signs;
+    }
+
+	    
     
 
     // HANDLE INPUT
@@ -241,7 +252,7 @@ void POINT_SELECT_FUNCTION(program_data data) {
         EnableCursor();
     }
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        data.all_points[0] = V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z));
+        data.all_points[0] = input_point;
         *data.program_state = VIEW_MODE;
     }
 
@@ -286,8 +297,9 @@ void POINT_SELECT_FUNCTION(program_data data) {
             // DRAW MAIN GRID
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
             if (axis_collision.hit) {
-                DrawSphere(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 0.25, BLACK);
-                draw_grid(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 5, 1, up, BLACK);
+                DrawSphere(input_point, 0.25, BLACK);
+                //draw_grid(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 5, 1, up, BLACK);
+		draw_grid(input_point, 5, 1, up, BLACK);
 
             }
 

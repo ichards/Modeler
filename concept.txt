@@ -1,0 +1,13 @@
+I'm writing this to have a clear idea of what i'm making.
+
+Purpose:
+I'm writing a program that allows you to make 3D models. It will do this by letting you place points in a 3D space and create
+faces from them.
+
+Blueprint:
+The program will start in a viewing mode. The user will be able to select an axis, on which they will be able to either place
+a point down, or produce a selection grid, which they can then traverse to again either place a point down or make a selection grid.
+
+States:
+VIEW -> SELECTION
+  ^------| ^--|
