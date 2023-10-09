@@ -41,6 +41,35 @@ void draw_grid(Vector3 center, int lines_no, float unit_size, Vector3 up, Color 
 			grid_color);
 }
 
+// actually draws grid. i'm such an idiot, i'll fix the naming later
+void draw_grid2(Vector3 center, int lines_no, float unit_size, Vector3 up, Color grid_color) {	
+	if (up.x == 1) {
+		for (unsigned int i = -(lines_no/2); i<=lines_no/2; i++) {
+			DrawLine3D(
+			V3(center.x - (unit_size * lines_no), center.y + (i * unit_size * up.y), center.z + (i * unit_size * up.z)),
+			V3(center.x + (unit_size * lines_no), center.y + (i * unit_size * up.y), center.z + (i * unit_size * up.z)),
+			grid_color);
+		}
+	}
+	if (up.y == 1) {
+		for (unsigned int i = -(lines_no/2); i<=lines_no/2; i++) {
+			DrawLine3D(
+			V3(center.x + (i * unit_size * up.x), center.y + (unit_size * lines_no), center.z + (i * unit_size * up.z)),
+			V3(center.x + (i * unit_size * up.x), center.y - (unit_size * lines_no), center.z + (i * unit_size * up.z)),
+			grid_color);
+		}
+	}
+	if (up.z == 1) {
+		for (unsigned int i= -(lines_no/2); i<=lines_no/2; i++) {
+			DrawLine3D(
+			V3(center.x + (i * unit_size * up.x), center.y + (i * unit_size * up.y), center.z + (unit_size * lines_no)),
+			V3(center.x + (i * unit_size * up.x), center.y + (i * unit_size * up.y), center.z - (unit_size * lines_no)),
+			grid_color);
+		}
+	}
+}
+
+
 void draw_axis(Vector3 center, int unit_no, Color x, Color y, Color z) {
     DrawLine3D(Vector3Subtract(center, V3(unit_no, 0, 0)), Vector3Add(center, V3(unit_no, 0, 0)), x);
     DrawLine3D(Vector3Subtract(center, V3(0, unit_no, 0)), Vector3Add(center, V3(0, unit_no, 0)), y);
@@ -81,6 +110,8 @@ typedef struct {
     STATE* program_state;
     Vector3* all_points;
     Vector3* save_vector;
+    Vector3* grid_point;
+    Vector3* grid_up;
 } program_data;
 
 
@@ -215,6 +246,105 @@ void VIEW_FUNCTION(program_data data) {
 }
 
 //void POINT_SELECT_FUNCTION(Camera* camera, Camera *mini_camera, RenderTexture2D* corner_render, const int* screenWidth, const int* screenHeight, STATE* mode) {
+void GRID_SELECT_FUNCTION(program_data data) {
+
+    // MOUSE COLLISION
+    //Color x_color = BLACK, y_color = BLACK, z_color = BLACK;
+    Ray mouse_ray = GetMouseRay(GetMousePosition(), *data.main_camera);
+    //float distance;
+
+    //RayCollision x_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-10, -0.5, -0.5), V3(10, 0.5, 0.5)});
+    //RayCollision y_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-0.5, -10, -0.5), V3(0.5, 10, 0.5)});
+    RayCollision axis_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {Vector3Multiply(V3(-0.5, -0.5, -0.5), *data.save_vector), Vector3Multiply(V3(0.5, 0.5, 0.5), *data.save_vector)});
+
+    // make a visual sphere that shows where the user is selecting (assuming clip to nearest whole value)
+    Vector3 input_point = V3(0, 0, 0);
+    if (axis_collision.hit) {
+	Vector3 signs = V3(((axis_collision.point.x > 0) - (axis_collision.point.x < 0)) * (data.save_vector->x == 20),
+			((axis_collision.point.y > 0) - (axis_collision.point.y < 0)) * (data.save_vector->y == 20),
+			((axis_collision.point.z > 0) - (axis_collision.point.z < 0)) * (data.save_vector->z == 20));
+	input_point = V3((int)(axis_collision.point.x + (0.5 * signs.x)),(int)(axis_collision.point.y + (0.5 * signs.y)),(int)(axis_collision.point.z + (0.5 * signs.z)));
+	//input_point = signs;
+    }
+
+	    
+ 	Vector3 up = V3((data.save_vector->x == 1) ? 1 : 0, (data.save_vector->y == 1) ? 1 : 0, (data.save_vector->z == 1) ? 1 : 0);   
+
+    // HANDLE INPUT
+    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
+        DisableCursor();
+    }
+    if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
+        UpdateCamera(data.main_camera, CAMERA_THIRD_PERSON);
+        data.mini_camera->position = Vector3Negate(Vector3Normalize(data.main_camera->position));
+        data.mini_camera->up = data.main_camera->up;
+    }
+    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
+        EnableCursor();
+    }
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        //data.all_points[0] = input_point;
+        *data.program_state = POINT_MODE_PLACE;
+	*data.grid_point = input_point;
+	*data.grid_up = up;
+    }
+
+
+    // DRAW XYZ AXIS ONTO SEPERATE RENDER INSTANCE
+    BeginTextureMode(*data.reference_render);
+        BeginMode3D(*data.mini_camera);
+
+            ClearBackground((Color){100, 100, 100, 255});
+
+            DrawLine3D(V3(0, 0, 0), V3(-0.25, 0, 0), C4(255, 0, 0, 255));
+            DrawLine3D(V3(0, 0, 0), V3(0.25, 0, 0), C4(0, 255, 255, 255));
+            DrawCylinderEx(V3(-0.15, 0, 0), V3(-0.1, 0, 0), 0, 0.025, 10, C4(255, 0, 0, 255));
+            DrawCylinderEx(V3(0.15, 0, 0), V3(0.1, 0, 0), 0.025, 0, 10, C4(0, 255, 255, 255));
+
+            DrawLine3D(V3(0, 0, 0), V3(0, -0.25, 0), C4(0, 255, 0, 255));
+            DrawLine3D(V3(0, 0, 0), V3(0, 0.25, 0), C4(255, 0, 255, 255));
+            DrawCylinderEx(V3(0, -0.15, 0), V3(0, -0.1, 0), 0, 0.025, 10, C4(0, 255, 0, 255));
+            DrawCylinderEx(V3(0, 0.15, 0), V3(0, 0.1, 0), 0.025, 0, 10, C4(255, 0, 255, 255));
+
+            DrawLine3D(V3(0, 0, 0), V3(0, 0, -0.25), C4(0, 0, 255, 255));
+            DrawLine3D(V3(0, 0, 0), V3(0, 0, 0.25), C4(255, 255, 0, 255));
+            DrawCylinderEx(V3(0, 0, -0.15), V3(0, 0, -0.1), 0, 0.025, 10, C4(0, 0, 255, 255));
+            DrawCylinderEx(V3(0, 0, 0.15), V3(0, 0, 0.1), 0.025, 0, 10, C4(255, 255, 0, 255));
+
+        EndMode3D();
+    EndTextureMode();
+
+
+
+
+
+    // DRAW MAIN SCREEN
+    BeginDrawing();
+
+    	ClearBackground(STATE_COLORS[*(data.program_state)]);
+
+	DrawRectangle(10, 10, *(data.window_width) - 20, *(data.window_height) - 20, GRAY);
+
+        BeginMode3D(*data.main_camera);
+
+            // DRAW MAIN GRID
+            draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
+            if (axis_collision.hit) {
+                DrawSphere(input_point, 0.25, BLACK);
+                //draw_grid(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 5, 1, up, BLACK);
+		draw_grid(input_point, 5, 1, up, BLACK);
+
+            }
+
+        EndMode3D();
+
+        DrawTexture(data.reference_render->texture, 0, *data.window_height - (*data.window_width / 8), WHITE);
+
+    EndDrawing();
+    
+
+}
+
 void POINT_SELECT_FUNCTION(program_data data) {
 
     // MOUSE COLLISION
@@ -251,11 +381,6 @@ void POINT_SELECT_FUNCTION(program_data data) {
     if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
         EnableCursor();
     }
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        data.all_points[0] = input_point;
-        *data.program_state = VIEW_MODE;
-    }
-
 
     // DRAW XYZ AXIS ONTO SEPERATE RENDER INSTANCE
     BeginTextureMode(*data.reference_render);
@@ -299,7 +424,7 @@ void POINT_SELECT_FUNCTION(program_data data) {
             if (axis_collision.hit) {
                 DrawSphere(input_point, 0.25, BLACK);
                 //draw_grid(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 5, 1, up, BLACK);
-		draw_grid(input_point, 5, 1, up, BLACK);
+		draw_grid(*data.grid_point, 5, 1, *data.grid_up, BLACK);
 
             }
 
@@ -311,6 +436,7 @@ void POINT_SELECT_FUNCTION(program_data data) {
     
 
 }
+
 
 // add a union parameter that lets you add input to the next state so that
 // it stores minimal data that's interpreted depending on the state
@@ -341,7 +467,7 @@ int main(void)
 
     // INITIALIZE PROGRAM STATE
     STATE mode = VIEW_MODE;
-    STATE_FUNCTION mode_functions[3] = {&VIEW_FUNCTION, &POINT_SELECT_FUNCTION, &VIEW_FUNCTION};
+    STATE_FUNCTION mode_functions[3] = {&VIEW_FUNCTION, &GRID_SELECT_FUNCTION, &POINT_SELECT_FUNCTION};
 
     // INITIALIZE RENDERING NONSENSE
     SetTargetFPS(60);
@@ -357,7 +483,10 @@ int main(void)
 
     Vector3 save_vector = V3(0, 0, 0);
 
-    program_data p_program_data = (program_data) {&screenWidth, &screenHeight, &camera, &mini_camera, &corner_render, &mode, all_points, &save_vector};
+    Vector3 grid_point = V3(0, 0, 0);
+    Vector3 grid_up = V3(0, 0, 0);
+
+    program_data p_program_data = (program_data) {&screenWidth, &screenHeight, &camera, &mini_camera, &corner_render, &mode, all_points, &save_vector, &grid_point, &grid_up};
 
     // MAIN LOOP
     while (!WindowShouldClose())
