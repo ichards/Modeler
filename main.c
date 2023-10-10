@@ -43,8 +43,9 @@ void draw_grid(Vector3 center, int lines_no, float unit_size, Vector3 up, Color 
 
 // actually draws grid. i'm such an idiot, i'll fix the naming later
 void draw_grid2(Vector3 center, int lines_no, float unit_size, Vector3 up, Color grid_color) {	
+
 	if (up.x == 1) {
-		for (unsigned int i = -(lines_no/2); i<=lines_no/2; i++) {
+		for (int i = -(lines_no/2); i<=lines_no/2; i++) {
 			DrawLine3D(
 			V3(center.x - (unit_size * lines_no), center.y + (i * unit_size * up.y), center.z + (i * unit_size * up.z)),
 			V3(center.x + (unit_size * lines_no), center.y + (i * unit_size * up.y), center.z + (i * unit_size * up.z)),
@@ -52,7 +53,7 @@ void draw_grid2(Vector3 center, int lines_no, float unit_size, Vector3 up, Color
 		}
 	}
 	if (up.y == 1) {
-		for (unsigned int i = -(lines_no/2); i<=lines_no/2; i++) {
+		for (int i = -(lines_no/2); i<=lines_no/2; i++) {
 			DrawLine3D(
 			V3(center.x + (i * unit_size * up.x), center.y + (unit_size * lines_no), center.z + (i * unit_size * up.z)),
 			V3(center.x + (i * unit_size * up.x), center.y - (unit_size * lines_no), center.z + (i * unit_size * up.z)),
@@ -60,7 +61,7 @@ void draw_grid2(Vector3 center, int lines_no, float unit_size, Vector3 up, Color
 		}
 	}
 	if (up.z == 1) {
-		for (unsigned int i= -(lines_no/2); i<=lines_no/2; i++) {
+		for (int i= -(lines_no/2); i<=lines_no/2; i++) {
 			DrawLine3D(
 			V3(center.x + (i * unit_size * up.x), center.y + (i * unit_size * up.y), center.z + (unit_size * lines_no)),
 			V3(center.x + (i * unit_size * up.x), center.y + (i * unit_size * up.y), center.z - (unit_size * lines_no)),
