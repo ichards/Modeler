@@ -421,12 +421,8 @@ void POINT_SELECT_FUNCTION(program_data data) {
 
             // DRAW MAIN GRID
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
-            if (axis_collision.hit) {
-                DrawSphere(input_point, 0.25, BLACK);
-                //draw_grid(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 5, 1, up, BLACK);
-		draw_grid(*data.grid_point, 5, 1, *data.grid_up, BLACK);
 
-            }
+ 	    draw_grid2(*data.grid_point, 5, 1, *data.grid_up, BLACK);
 
         EndMode3D();
 
