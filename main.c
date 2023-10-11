@@ -47,24 +47,24 @@ void draw_grid2(Vector3 center, int lines_no, float unit_size, Vector3 up, Color
 	if (up.x == 1) {
 		for (int i = -(lines_no/2); i<=lines_no/2; i++) {
 			DrawLine3D(
-			V3(center.x - (unit_size * lines_no), center.y + (i * unit_size * up.y), center.z + (i * unit_size * up.z)),
-			V3(center.x + (unit_size * lines_no), center.y + (i * unit_size * up.y), center.z + (i * unit_size * up.z)),
+			V3(center.x - (unit_size * lines_no / 2), center.y + (i * unit_size * up.y), center.z + (i * unit_size * up.z)),
+			V3(center.x + (unit_size * lines_no / 2), center.y + (i * unit_size * up.y), center.z + (i * unit_size * up.z)),
 			grid_color);
 		}
 	}
 	if (up.y == 1) {
 		for (int i = -(lines_no/2); i<=lines_no/2; i++) {
 			DrawLine3D(
-			V3(center.x + (i * unit_size * up.x), center.y + (unit_size * lines_no), center.z + (i * unit_size * up.z)),
-			V3(center.x + (i * unit_size * up.x), center.y - (unit_size * lines_no), center.z + (i * unit_size * up.z)),
+			V3(center.x + (i * unit_size * up.x), center.y + (unit_size * lines_no / 2), center.z + (i * unit_size * up.z)),
+			V3(center.x + (i * unit_size * up.x), center.y - (unit_size * lines_no / 2), center.z + (i * unit_size * up.z)),
 			grid_color);
 		}
 	}
 	if (up.z == 1) {
 		for (int i= -(lines_no/2); i<=lines_no/2; i++) {
 			DrawLine3D(
-			V3(center.x + (i * unit_size * up.x), center.y + (i * unit_size * up.y), center.z + (unit_size * lines_no)),
-			V3(center.x + (i * unit_size * up.x), center.y + (i * unit_size * up.y), center.z - (unit_size * lines_no)),
+			V3(center.x + (i * unit_size * up.x), center.y + (i * unit_size * up.y), center.z + (unit_size * lines_no / 2)),
+			V3(center.x + (i * unit_size * up.x), center.y + (i * unit_size * up.y), center.z - (unit_size * lines_no / 2)),
 			grid_color);
 		}
 	}
@@ -355,17 +355,9 @@ void POINT_SELECT_FUNCTION(program_data data) {
 
     //RayCollision x_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-10, -0.5, -0.5), V3(10, 0.5, 0.5)});
     //RayCollision y_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-0.5, -10, -0.5), V3(0.5, 10, 0.5)});
-    RayCollision axis_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {Vector3Multiply(V3(-0.5, -0.5, -0.5), *data.save_vector), Vector3Multiply(V3(0.5, 0.5, 0.5), *data.save_vector)});
 
-    // make a visual sphere that shows where the user is selecting (assuming clip to nearest whole value)
-    Vector3 input_point = V3(0, 0, 0);
-    if (axis_collision.hit) {
-	Vector3 signs = V3(((axis_collision.point.x > 0) - (axis_collision.point.x < 0)) * (data.save_vector->x == 20),
-			((axis_collision.point.y > 0) - (axis_collision.point.y < 0)) * (data.save_vector->y == 20),
-			((axis_collision.point.z > 0) - (axis_collision.point.z < 0)) * (data.save_vector->z == 20));
-	input_point = V3((int)(axis_collision.point.x + (0.5 * signs.x)),(int)(axis_collision.point.y + (0.5 * signs.y)),(int)(axis_collision.point.z + (0.5 * signs.z)));
-	//input_point = signs;
-    }
+
+
 
 	    
     
@@ -410,6 +402,13 @@ void POINT_SELECT_FUNCTION(program_data data) {
 
 
 	Vector3 up = V3((data.save_vector->x == 1) ? 1 : 0, (data.save_vector->y == 1) ? 1 : 0, (data.save_vector->z == 1) ? 1 : 0);
+	Vector3 upinverse = Vector3Subtract(V3(1, 1, 1), *data.grid_up);
+
+    RayCollision axis_collision = GetRayCollisionBox(mouse_ray, (BoundingBox)
+		    {Vector3Add(*data.grid_point, V3(upinverse.x + (data.grid_up->x * 5), upinverse.y + (data.grid_up->x * 5), upinverse.z + (data.grid_up->x * 5))),
+			    Vector3Subtract(*data.grid_point, V3(upinverse.x + (data.grid_up->x * 5), upinverse.y + (data.grid_up->x * 5), upinverse.z + (data.grid_up->x * 5))) 
+			    });
+
 
     // DRAW MAIN SCREEN
     BeginDrawing();
@@ -424,6 +423,8 @@ void POINT_SELECT_FUNCTION(program_data data) {
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 
  	    draw_grid2(*data.grid_point, 5, 1, *data.grid_up, BLACK);
+
+	    DrawSphere(axis_collision.point, 1, BLACK);
 
         EndMode3D();
 
