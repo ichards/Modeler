@@ -404,10 +404,30 @@ void POINT_SELECT_FUNCTION(program_data data) {
 	Vector3 up = V3((data.save_vector->x == 1) ? 1 : 0, (data.save_vector->y == 1) ? 1 : 0, (data.save_vector->z == 1) ? 1 : 0);
 	Vector3 upinverse = Vector3Subtract(V3(1, 1, 1), *data.grid_up);
 
-    RayCollision axis_collision = GetRayCollisionBox(mouse_ray, (BoundingBox)
+/*    RayCollision axis_collision = GetRayCollisionBox(mouse_ray, (BoundingBox)
 		    {Vector3Add(*data.grid_point, V3(upinverse.x + (data.grid_up->x * 5), upinverse.y + (data.grid_up->x * 5), upinverse.z + (data.grid_up->x * 5))),
 			    Vector3Subtract(*data.grid_point, V3(upinverse.x + (data.grid_up->x * 5), upinverse.y + (data.grid_up->x * 5), upinverse.z + (data.grid_up->x * 5))) 
 			    });
+			    */
+	Vector3 corner1, corner2;
+	if (upinverse.x == 0) {
+		corner1 = Vector3Add(*data.grid_point, V3(0, 5, -5));
+		corner2 = Vector3Add(*data.grid_point, V3(0, -5, 5));
+	}
+	if (upinverse.y == 0) {
+		corner1 = Vector3Add(*data.grid_point, V3(5, 0, -5));
+		corner2 = Vector3Add(*data.grid_point, V3(-5, 0, 5));
+	}
+	if (upinverse.z == 0) {
+		corner1 = Vector3Add(*data.grid_point, V3(5, -5, 0));
+		corner2 = Vector3Add(*data.grid_point, V3(-5, 5, 0));
+	}
+
+	RayCollision axis_collision = GetRayCollisionQuad(mouse_ray,
+			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			corner1,
+			corner2);
 
 
     // DRAW MAIN SCREEN
@@ -423,6 +443,25 @@ void POINT_SELECT_FUNCTION(program_data data) {
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 
  	    draw_grid2(*data.grid_point, 5, 1, *data.grid_up, BLACK);
+
+	    DrawTriangle3D(Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			corner1,
+			BLUE);
+	    DrawTriangle3D(corner1,
+			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			BLUE);
+
+
+	    DrawTriangle3D(Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			corner2,
+			BLUE);
+	    DrawTriangle3D(corner2,
+			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			BLUE);
 
 	    DrawSphere(axis_collision.point, 1, BLACK);
 
