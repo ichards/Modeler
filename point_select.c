@@ -80,25 +80,13 @@ void POINT_SELECT_FUNCTION(program_data data) {
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 
  	    draw_grid2(*data.grid_point, 5, 1, *data.grid_up, BLACK);
-
-	    DrawTriangle3D(Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+		
+		draw_quad(Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
 			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
 			corner1,
-			BLUE);
-	    DrawTriangle3D(corner1,
-			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
-			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
-			BLUE);
-
-
-	    DrawTriangle3D(Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
-			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
 			corner2,
 			BLUE);
-	    DrawTriangle3D(corner2,
-			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
-			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
-			BLUE);
+			
 
 	    DrawSphere(axis_collision.point, 1, BLACK);
 

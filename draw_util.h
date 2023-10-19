@@ -9,3 +9,4 @@ void draw_grid(Vector3, int, float, Vector3, Color);
 void draw_grid2(Vector3, int, float, Vector3, Color);
 void draw_axis(Vector3, int, Color, Color, Color);
 void draw_y_axis(Vector3, int, float);
+void draw_quad(Vector3, Vector3, Vector3, Vector3, Color);
