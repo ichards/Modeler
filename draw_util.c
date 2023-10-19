@@ -78,3 +78,17 @@ void draw_y_axis(Vector3 center, int lines_no, float unit_size) {
         DrawLine3D(V3(center.x, center.y + (i * unit_size), center.z - (unit_size / 2)), V3(center.x, center.y + (i * unit_size), center.z + (unit_size / 2)), BLACK);
     }
 }
+
+void draw_quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color col) {
+	DrawTriangle3D(a, b, c, col);
+	DrawTriangle3D(c, b, a, col);
+	DrawTriangle3D(a, b, d, col);
+	DrawTriangle3D(d, b, a, col);
+}
+
+
+
+
+
+
+
