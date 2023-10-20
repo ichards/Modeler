@@ -7,18 +7,11 @@
 void POINT_SELECT_FUNCTION(program_data data) {
 
     // MOUSE COLLISION
-    //Color x_color = BLACK, y_color = BLACK, z_color = BLACK;
     Ray mouse_ray = GetMouseRay(GetMousePosition(), *data.main_camera);
-    //float distance;
-
-    //RayCollision x_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-10, -0.5, -0.5), V3(10, 0.5, 0.5)});
-    //RayCollision y_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-0.5, -10, -0.5), V3(0.5, 10, 0.5)});
-
-
 
 
 	    
-    
+
 
     // HANDLE INPUT
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
@@ -41,30 +34,39 @@ void POINT_SELECT_FUNCTION(program_data data) {
 	Vector3 up = V3((data.save_vector->x == 1) ? 1 : 0, (data.save_vector->y == 1) ? 1 : 0, (data.save_vector->z == 1) ? 1 : 0);
 	Vector3 upinverse = Vector3Subtract(V3(1, 1, 1), *data.grid_up);
 
-/*    RayCollision axis_collision = GetRayCollisionBox(mouse_ray, (BoundingBox)
-		    {Vector3Add(*data.grid_point, V3(upinverse.x + (data.grid_up->x * 5), upinverse.y + (data.grid_up->x * 5), upinverse.z + (data.grid_up->x * 5))),
-			    Vector3Subtract(*data.grid_point, V3(upinverse.x + (data.grid_up->x * 5), upinverse.y + (data.grid_up->x * 5), upinverse.z + (data.grid_up->x * 5))) 
-			    });
-			    */
 	Vector3 corner1, corner2;
-	if (upinverse.x == 0) {
+	if (upinverse.x == 1) {
 		corner1 = Vector3Add(*data.grid_point, V3(0, 5, -5));
 		corner2 = Vector3Add(*data.grid_point, V3(0, -5, 5));
 	}
-	if (upinverse.y == 0) {
+	if (upinverse.y == 1) {
 		corner1 = Vector3Add(*data.grid_point, V3(5, 0, -5));
 		corner2 = Vector3Add(*data.grid_point, V3(-5, 0, 5));
 	}
-	if (upinverse.z == 0) {
+	if (upinverse.z == 1) {
 		corner1 = Vector3Add(*data.grid_point, V3(5, -5, 0));
 		corner2 = Vector3Add(*data.grid_point, V3(-5, 5, 0));
 	}
 
+/*
 	RayCollision axis_collision = GetRayCollisionQuad(mouse_ray,
 			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
 			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
 			corner1,
 			corner2);
+			*/
+	
+	RayCollision axis_collision = GetRayCollisionTriangle(mouse_ray,
+			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			corner1,
+			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)));
+	
+	if (!axis_collision.hit) {
+		axis_collision = GetRayCollisionTriangle(mouse_ray,
+			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			corner2,
+			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)));
+	}
 
 
     // DRAW MAIN SCREEN
@@ -72,7 +74,7 @@ void POINT_SELECT_FUNCTION(program_data data) {
 
     	//ClearBackground(STATE_COLORS[*(data.program_state)]);
 		ClearBackground(data.colors[*(data.program_state)]);
-	DrawRectangle(10, 10, *(data.window_width) - 20, *(data.window_height) - 20, GRAY);
+		DrawRectangle(10, 10, *(data.window_width) - 20, *(data.window_height) - 20, GRAY);
 
         BeginMode3D(*data.main_camera);
 
