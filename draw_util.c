@@ -87,7 +87,16 @@ void draw_quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color col) {
 }
 
 
-
+int closest_integer(float v) {
+	int vsign = (v > 0) - (v < 0);
+	int vtrunc = (int) v;
+	if ((v - vtrunc) * vsign >= 0.5) {
+		return vtrunc + vsign;
+	} else {
+		return vtrunc;
+	}
+	return -1;
+}
 
 
 
