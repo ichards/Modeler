@@ -18,10 +18,10 @@ void GRID_SELECT_FUNCTION(program_data data) {
     // make a visual sphere that shows where the user is selecting (assuming clip to nearest whole value)
     Vector3 input_point = V3(0, 0, 0);
     if (axis_collision.hit) {
-	Vector3 signs = V3(((axis_collision.point.x > 0) - (axis_collision.point.x < 0)) * (data.save_vector->x == 20),
-			((axis_collision.point.y > 0) - (axis_collision.point.y < 0)) * (data.save_vector->y == 20),
-			((axis_collision.point.z > 0) - (axis_collision.point.z < 0)) * (data.save_vector->z == 20));
-	input_point = V3((int)(axis_collision.point.x + (0.5 * signs.x)),(int)(axis_collision.point.y + (0.5 * signs.y)),(int)(axis_collision.point.z + (0.5 * signs.z)));
+        Vector3 signs = V3(((axis_collision.point.x > 0) - (axis_collision.point.x < 0)) * (data.save_vector->x == 20),
+                ((axis_collision.point.y > 0) - (axis_collision.point.y < 0)) * (data.save_vector->y == 20),
+                ((axis_collision.point.z > 0) - (axis_collision.point.z < 0)) * (data.save_vector->z == 20));
+        input_point = V3((int)(axis_collision.point.x + (0.5 * signs.x)),(int)(axis_collision.point.y + (0.5 * signs.y)),(int)(axis_collision.point.z + (0.5 * signs.z)));
 	//input_point = signs;
     }
 
