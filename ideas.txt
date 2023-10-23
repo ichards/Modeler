@@ -1,3 +1,5 @@
 *when selecting where to put point on axis, left click will place point and right point will produce another 2 axes where you can then select one and continue changing the location until you get a left click. (idk if left or right click to pick new axis)
 
 make an enum to programmatically derive xyz. like v3[y] = 0, or v3[1] = 0. will help avoid if statements
+
+make points list go until duplicate point.

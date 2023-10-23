@@ -27,3 +27,9 @@ void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
         EndMode3D();
     EndTextureMode();
 }
+
+void DRAW_POINTS(Vector3* points, unsigned int points_no) {
+	for (unsigned int i=0; i<points_no; i++) {
+		DrawSphere(points[i], 0.5, BLACK);
+	}
+}

@@ -19,6 +19,7 @@ typedef struct {
     RenderTexture2D* reference_render;
     STATE* program_state;
     Vector3* all_points;
+	unsigned int* points_no;
     Vector3* save_vector;
     Vector3* grid_point;
     Vector3* grid_up;
@@ -26,6 +27,8 @@ typedef struct {
 } program_data;
 
 void DRAW_COMPASS(RenderTexture2D*, Camera*);
+
+void DRAW_POINTS(Vector3*, unsigned int);
 
 void VIEW_FUNCTION(program_data data);
 

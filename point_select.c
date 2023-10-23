@@ -13,18 +13,7 @@ void POINT_SELECT_FUNCTION(program_data data) {
 	    
 
 
-    // HANDLE INPUT
-    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-        DisableCursor();
-    }
-    if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
-        UpdateCamera(data.main_camera, CAMERA_THIRD_PERSON);
-        data.mini_camera->position = Vector3Negate(Vector3Normalize(data.main_camera->position));
-        data.mini_camera->up = data.main_camera->up;
-    }
-    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
-        EnableCursor();
-    }
+
 
 	DRAW_COMPASS(data.reference_render, data.mini_camera);
 
@@ -67,6 +56,26 @@ void POINT_SELECT_FUNCTION(program_data data) {
 	if ((*data.grid_up).x == 0) draw_point.x = axis_collision.point.x;
 	if ((*data.grid_up).y == 0) draw_point.y = axis_collision.point.y;
 	if ((*data.grid_up).z == 0) draw_point.z = axis_collision.point.z;
+	
+    // HANDLE INPUT
+    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
+        DisableCursor();
+    }
+    if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
+        UpdateCamera(data.main_camera, CAMERA_THIRD_PERSON);
+        data.mini_camera->position = Vector3Negate(Vector3Normalize(data.main_camera->position));
+        data.mini_camera->up = data.main_camera->up;
+    }
+    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
+        EnableCursor();
+    }
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+		if (axis_collision.hit) {
+			data.all_points[(*data.points_no)++] = draw_point;
+			*data.program_state = VIEW_MODE;
+		}
+		
+    }
 
 	char buf[10];
 
@@ -94,18 +103,18 @@ void POINT_SELECT_FUNCTION(program_data data) {
 
 
         BeginMode3D(*data.main_camera);
+		
 
             // DRAW MAIN GRID
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
+			
+			DRAW_POINTS(data.all_points, *data.points_no);
 
- 	    draw_grid2(*data.grid_point, 5, 1, *data.grid_up, BLACK);
-		draw_quad(Vector3Add(*data.grid_point, V3((*data.grid_up).x * 5, (*data.grid_up).y * 5, (*data.grid_up).z * 5)),
-			Vector3Subtract(*data.grid_point, V3((*data.grid_up).x * 5, (*data.grid_up).y * 5, (*data.grid_up).z * 5)),
-			corner1,
-			corner2,
-			BLUE);
+			
 
-		if (axis_collision.hit) DrawSphere(draw_point, 0.5, BLACK);
+			draw_grid2(*data.grid_point, 5, 1, *data.grid_up, BLACK);
+
+			if (axis_collision.hit) DrawSphere(draw_point, 0.5, BLACK);
 
         EndMode3D();
 

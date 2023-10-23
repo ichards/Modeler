@@ -96,6 +96,9 @@ void VIEW_FUNCTION(program_data data) {
 
             // DRAW MAIN GRID
             draw_axis(V3(0, 0, 0), 10, x_color, y_color, z_color);
+			
+			DRAW_POINTS(data.all_points, *data.points_no);
+
 
             DrawSphere(data.all_points[0], 0.5, BLACK);
 
