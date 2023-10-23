@@ -2,4 +2,4 @@
 
 make an enum to programmatically derive xyz. like v3[y] = 0, or v3[1] = 0. will help avoid if statements
 
-make points list go until duplicate point.
+make camera smoothly move to grid center when entering point_selection mode

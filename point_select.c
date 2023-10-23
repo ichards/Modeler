@@ -112,7 +112,7 @@ void POINT_SELECT_FUNCTION(program_data data) {
 
 			
 
-			draw_grid2(*data.grid_point, 5, 1, *data.grid_up, BLACK);
+			draw_grid2(*data.grid_point, 9, 1, *data.grid_up, BLACK);
 
 			if (axis_collision.hit) DrawSphere(draw_point, 0.5, BLACK);
 
