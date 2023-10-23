@@ -31,7 +31,7 @@ void POINT_SELECT_FUNCTION(program_data data) {
 
 
 
-	Vector3 up = V3((data.save_vector->x == 1) ? 1 : 0, (data.save_vector->y == 1) ? 1 : 0, (data.save_vector->z == 1) ? 1 : 0);
+	//Vector3 up = V3((data.save_vector->x == 1) ? 1 : 0, (data.save_vector->y == 1) ? 1 : 0, (data.save_vector->z == 1) ? 1 : 0);
 	Vector3 upinverse = Vector3Subtract(V3(1, 1, 1), *data.grid_up);
 
 
@@ -50,29 +50,23 @@ void POINT_SELECT_FUNCTION(program_data data) {
 	}
 	
 	RayCollision axis_collision = GetRayCollisionTriangle(mouse_ray,
-			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			Vector3Add(*data.grid_point, V3((*data.grid_up).x * 5, (*data.grid_up).y * 5, (*data.grid_up).z * 5)),
 			corner1,
-			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)));
+			Vector3Subtract(*data.grid_point, V3((*data.grid_up).x * 5, (*data.grid_up).y * 5, (*data.grid_up).z * 5)));
 	
 	if (!axis_collision.hit) {
 		axis_collision = GetRayCollisionTriangle(mouse_ray,
-			Vector3Add(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)),
+			Vector3Add(*data.grid_point, V3((*data.grid_up).x * 5, (*data.grid_up).y * 5, (*data.grid_up).z * 5)),
 			corner2,
-			Vector3Subtract(*data.grid_point, V3(up.x * 5, up.y * 5, up.z * 5)));
+			Vector3Subtract(*data.grid_point, V3((*data.grid_up).x * 5, (*data.grid_up).y * 5, (*data.grid_up).z * 5)));
 	}
 
 	// snap point
-	Vector3 axis_collision_nosnap = V3(0, 0, 0);
-	if (axis_collision.hit) {
-		Vector3 signs = V3(
-			((*data.grid_point).x > 0) - ((*data.grid_point).x < 0),
-			((*data.grid_point).y > 0) - ((*data.grid_point).y < 0),
-			((*data.grid_point).z > 0) - ((*data.grid_point).z < 0)
-		);
-		axis_collision_nosnap = V3((axis_collision.point.x + (0.5 * signs.x)),(axis_collision.point.y + (1.5 * signs.y)),(axis_collision.point.z + (0.5 * signs.z)));
-		axis_collision.point = V3((int)(axis_collision.point.x + (0.5 * signs.x)),(int)(axis_collision.point.y + (1.5 * signs.y)),(int)(axis_collision.point.z + (0.5 * signs.z)));
-	}
+	Vector3 draw_point = V3(closest_integer(axis_collision.point.x), closest_integer(axis_collision.point.y), closest_integer(axis_collision.point.z));
 
+	if ((*data.grid_up).x == 0) draw_point.x = axis_collision.point.x;
+	if ((*data.grid_up).y == 0) draw_point.y = axis_collision.point.y;
+	if ((*data.grid_up).z == 0) draw_point.z = axis_collision.point.z;
 
 	char buf[10];
 
@@ -83,19 +77,19 @@ void POINT_SELECT_FUNCTION(program_data data) {
 		ClearBackground(data.colors[*(data.program_state)]);
 		DrawRectangle(10, 10, *(data.window_width) - 20, *(data.window_height) - 20, GRAY);
 
-		gcvt(axis_collision_nosnap.x, 1, buf);
+		gcvt(draw_point.x, 1, buf);
 		DrawText(buf, 0, 0, 30, BLACK);
-		gcvt(axis_collision.point.x, 1, buf);
+		gcvt((*data.grid_up).x, 1, buf);
 		DrawText(buf, 180, 0, 30, BLACK);
 
-		gcvt(axis_collision_nosnap.y, 1, buf);
+		gcvt(draw_point.y, 1, buf);
 		DrawText(buf, 0, 30, 30, BLACK);
-		gcvt(axis_collision.point.y, 1, buf);
+		gcvt((*data.grid_up).y, 1, buf);
 		DrawText(buf, 180, 30, 30, BLACK);
 
-		gcvt(axis_collision_nosnap.z, 1, buf);
+		gcvt(draw_point.z, 1, buf);
 		DrawText(buf, 0, 60, 30, BLACK);
-		gcvt(axis_collision.point.z, 1, buf);
+		gcvt((*data.grid_up).z, 1, buf);
 		DrawText(buf, 180, 60, 30, BLACK);
 
 
@@ -105,8 +99,13 @@ void POINT_SELECT_FUNCTION(program_data data) {
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 
  	    draw_grid2(*data.grid_point, 5, 1, *data.grid_up, BLACK);
+		draw_quad(Vector3Add(*data.grid_point, V3((*data.grid_up).x * 5, (*data.grid_up).y * 5, (*data.grid_up).z * 5)),
+			Vector3Subtract(*data.grid_point, V3((*data.grid_up).x * 5, (*data.grid_up).y * 5, (*data.grid_up).z * 5)),
+			corner1,
+			corner2,
+			BLUE);
 
-	    DrawSphere(axis_collision.point, 0.5, BLACK);
+		if (axis_collision.hit) DrawSphere(draw_point, 0.5, BLACK);
 
         EndMode3D();
 
