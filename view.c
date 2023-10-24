@@ -69,6 +69,8 @@ void VIEW_FUNCTION(program_data data) {
     if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
         EnableCursor();
     }
+	
+	Vector3* click_point = NULL;
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         if (x_collision.hit || y_collision.hit || z_collision.hit) {
@@ -76,6 +78,10 @@ void VIEW_FUNCTION(program_data data) {
                 *data.program_state = POINT_MODE_SELECT;
             }
         }
+		
+		click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data.main_camera), data.all_points, *(data.points_no));
+		
+		
     }
 
 	DRAW_COMPASS(data.reference_render, data.mini_camera);
@@ -101,6 +107,10 @@ void VIEW_FUNCTION(program_data data) {
 
 
             DrawSphere(data.all_points[0], 0.5, BLACK);
+			
+			if (click_point != NULL) {
+				DrawSphere(*click_point, 0.6, BLUE);
+			}
 
         EndMode3D();
 

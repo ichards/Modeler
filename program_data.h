@@ -1,5 +1,9 @@
 #include "raylib.h"
 
+#ifndef NULL
+#define NULL ((void*)0)
+#endif
+
 // INITIALIZE STATES
 typedef enum {
     VIEW_MODE = 0,
@@ -35,3 +39,5 @@ void VIEW_FUNCTION(program_data data);
 void GRID_SELECT_FUNCTION(program_data data);
 
 void POINT_SELECT_FUNCTION(program_data data);
+
+Vector3* MOUSE_POINT_COLLISION(Ray, Vector3*, unsigned int);
