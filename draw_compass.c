@@ -28,8 +28,12 @@ void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
     EndTextureMode();
 }
 
-void DRAW_POINTS(Vector3* points, unsigned int points_no) {
+void DRAW_POINTS(Vector3* points, unsigned int points_no, int* selected_points_idxs) {
 	for (unsigned int i=0; i<points_no; i++) {
 		DrawSphere(points[i], 0.5, BLACK);
+	}
+	unsigned int i = -1;
+	while (selected_points_idxs[++i] != -1) {
+		DrawSphere(points[selected_points_idxs[i]], 0.6, BLUE);
 	}
 }

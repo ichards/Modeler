@@ -61,7 +61,7 @@ void GRID_SELECT_FUNCTION(program_data data) {
             // DRAW MAIN GRID
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 			
-			DRAW_POINTS(data.all_points, *data.points_no);
+			DRAW_POINTS(data.all_points, *data.points_no, data.selected_points_idxs);
 
 			
             if (axis_collision.hit) {

@@ -53,6 +53,9 @@ int main(void)
     memset(all_points, 0, 20);
 	
 	unsigned int points_no = 0;
+	
+	int selected_points_idxs[20];
+	memset(selected_points_idxs, -1, 20);
 
     Vector3 save_vector = V3(0, 0, 0);
 
@@ -65,7 +68,7 @@ int main(void)
 		PURPLE	// POINT_MODE_PLACE
 	};
 
-    program_data p_program_data = (program_data) {&screenWidth, &screenHeight, &camera, &mini_camera, &corner_render, &mode, all_points, &points_no, &save_vector, &grid_point, &grid_up, STATE_COLORS};
+    program_data p_program_data = (program_data) {&screenWidth, &screenHeight, &camera, &mini_camera, &corner_render, &mode, all_points, &points_no, selected_points_idxs, &save_vector, &grid_point, &grid_up, STATE_COLORS};
 
     // MAIN LOOP
     while (!WindowShouldClose())

@@ -70,7 +70,6 @@ void VIEW_FUNCTION(program_data data) {
         EnableCursor();
     }
 	
-	Vector3* click_point = NULL;
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         if (x_collision.hit || y_collision.hit || z_collision.hit) {
@@ -79,12 +78,15 @@ void VIEW_FUNCTION(program_data data) {
             }
         }
 		
-		click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data.main_camera), data.all_points, *(data.points_no));
-		
+		int click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data.main_camera), data.all_points, *(data.points_no));
+		// add click point to selected_points
+		int i=-1;
+		while (data.selected_points_idxs[++i] != -1) {
+		}
+		data.selected_points_idxs[i] = click_point;
 		
     }
 
-	DRAW_COMPASS(data.reference_render, data.mini_camera);
 
 
 
@@ -103,14 +105,11 @@ void VIEW_FUNCTION(program_data data) {
             // DRAW MAIN GRID
             draw_axis(V3(0, 0, 0), 10, x_color, y_color, z_color);
 			
-			DRAW_POINTS(data.all_points, *data.points_no);
+			DRAW_POINTS(data.all_points, *data.points_no, data.selected_points_idxs);
 
 
             DrawSphere(data.all_points[0], 0.5, BLACK);
-			
-			if (click_point != NULL) {
-				DrawSphere(*click_point, 0.6, BLUE);
-			}
+
 
         EndMode3D();
 

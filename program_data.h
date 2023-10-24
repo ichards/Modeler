@@ -24,6 +24,7 @@ typedef struct {
     STATE* program_state;
     Vector3* all_points;
 	unsigned int* points_no;
+	int* selected_points_idxs;
     Vector3* save_vector;
     Vector3* grid_point;
     Vector3* grid_up;
@@ -32,7 +33,7 @@ typedef struct {
 
 void DRAW_COMPASS(RenderTexture2D*, Camera*);
 
-void DRAW_POINTS(Vector3*, unsigned int);
+void DRAW_POINTS(Vector3*, unsigned int, int*);
 
 void VIEW_FUNCTION(program_data data);
 
@@ -40,4 +41,4 @@ void GRID_SELECT_FUNCTION(program_data data);
 
 void POINT_SELECT_FUNCTION(program_data data);
 
-Vector3* MOUSE_POINT_COLLISION(Ray, Vector3*, unsigned int);
+int MOUSE_POINT_COLLISION(Ray, Vector3*, unsigned int);
