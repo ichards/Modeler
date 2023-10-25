@@ -1,6 +1,7 @@
 #include "program_data.h"
 #include "draw_util.h"
-
+#include <stdlib.h>
+#include <string.h>
 
 void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
     // DRAW XYZ AXIS ONTO SEPERATE RENDER INSTANCE
@@ -36,4 +37,23 @@ void DRAW_POINTS(Vector3* points, unsigned int points_no, int* selected_points_i
 	while (selected_points_idxs[++i] != -1) {
 		DrawSphere(points[selected_points_idxs[i]], 0.6, BLUE);
 	}
+}
+
+void ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_length, Vector3 point) {
+	
+	// need to resize
+	if (*points_no >= *points_length) {
+		Vector3* new_points = malloc(sizeof(Vector3) * (*points_length * 2));
+		memset(new_points, 0, *points_length * 2);
+		for (unsigned int i=0; i<*points_length; i++) {
+			new_points[i] = (*points)[i];
+		}
+		free(*points);
+		*points = new_points;
+		*points_length *= 2;
+	}
+	
+	(*points)[*points_no++] = point;
+	
+	
 }

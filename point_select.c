@@ -71,8 +71,11 @@ void POINT_SELECT_FUNCTION(program_data data) {
     }
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 		if (axis_collision.hit) {
+			
 			data.all_points[(*data.points_no)++] = draw_point;
 			*data.program_state = VIEW_MODE;
+			
+			//ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_length, Vector3 point)
 		}
 		
     }

@@ -42,3 +42,5 @@ void GRID_SELECT_FUNCTION(program_data data);
 void POINT_SELECT_FUNCTION(program_data data);
 
 int MOUSE_POINT_COLLISION(Ray, Vector3*, unsigned int);
+
+void ADD_POINT(Vector3**, unsigned int*, unsigned int*, Vector3);
