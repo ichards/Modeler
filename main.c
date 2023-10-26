@@ -12,7 +12,7 @@
 // add a union parameter that lets you add input to the next state so that
 // it stores minimal data that's interpreted depending on the state
 //typedef void (*STATE_FUNCTION) (Camera*, Camera*, RenderTexture2D*, const int*, const int*, STATE*);
-typedef void (*STATE_FUNCTION) (program_data);
+typedef void (*STATE_FUNCTION) (program_data*);
 
 
 
@@ -74,7 +74,7 @@ int main(void)
     while (!WindowShouldClose())
     {
 
-        mode_functions[mode](p_program_data);
+        mode_functions[mode](&p_program_data);
 
     }
 

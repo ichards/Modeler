@@ -35,11 +35,11 @@ void DRAW_COMPASS(RenderTexture2D*, Camera*);
 
 void DRAW_POINTS(Vector3*, unsigned int, int*);
 
-void VIEW_FUNCTION(program_data data);
+void VIEW_FUNCTION(program_data*);
 
-void GRID_SELECT_FUNCTION(program_data data);
+void GRID_SELECT_FUNCTION(program_data*);
 
-void POINT_SELECT_FUNCTION(program_data data);
+void POINT_SELECT_FUNCTION(program_data*);
 
 int MOUSE_POINT_COLLISION(Ray, Vector3*, unsigned int);
 
