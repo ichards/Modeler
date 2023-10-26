@@ -15,7 +15,6 @@ void POINT_SELECT_FUNCTION(program_data* data) {
 
 
 
-	DRAW_COMPASS(data->reference_render, data->mini_camera);
 
 
 
@@ -72,15 +71,19 @@ void POINT_SELECT_FUNCTION(program_data* data) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 		if (axis_collision.hit) {
 			
-			data->all_points[(*data->points_no)++] = draw_point;
-			*data->program_state = VIEW_MODE;
+			//data->all_points[(*data->points_no)++] = draw_point;
+			//*data->program_state = VIEW_MODE;
 			
 			//ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_length, Vector3 point)
+			ADD_POINT(&data->all_points, data->points_no, data->points_length, draw_point);
+			*data->program_state = VIEW_MODE;
 		}
 		
     }
 
 	char buf[10];
+
+	DRAW_COMPASS(data->reference_render, data->mini_camera);
 
     // DRAW MAIN SCREEN
     BeginDrawing();
@@ -112,8 +115,6 @@ void POINT_SELECT_FUNCTION(program_data* data) {
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 			
 			DRAW_POINTS(data->all_points, *data->points_no, data->selected_points_idxs);
-
-			
 
 			draw_grid2(*data->grid_point, 9, 1, *data->grid_up, BLACK);
 

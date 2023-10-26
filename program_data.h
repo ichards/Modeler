@@ -24,6 +24,7 @@ typedef struct {
     STATE* program_state;
     Vector3* all_points;
 	unsigned int* points_no;
+	unsigned int* points_length;
 	int* selected_points_idxs;
     Vector3* save_vector;
     Vector3* grid_point;

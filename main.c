@@ -48,14 +48,16 @@ int main(void)
     STATE_FUNCTION view_fun;
 
     view_fun = &VIEW_FUNCTION;
+	
+	unsigned int points_length = 20;
 
-    Vector3 all_points[20];
-    memset(all_points, 0, 20);
+    Vector3 all_points[points_length];
+    memset(all_points, 0, points_length);
 	
 	unsigned int points_no = 0;
 	
-	int selected_points_idxs[20];
-	memset(selected_points_idxs, -1, 20);
+	int selected_points_idxs[points_length];
+	memset(selected_points_idxs, -1, points_length);
 
     Vector3 save_vector = V3(0, 0, 0);
 
@@ -68,7 +70,7 @@ int main(void)
 		PURPLE	// POINT_MODE_PLACE
 	};
 
-    program_data p_program_data = (program_data) {&screenWidth, &screenHeight, &camera, &mini_camera, &corner_render, &mode, all_points, &points_no, selected_points_idxs, &save_vector, &grid_point, &grid_up, STATE_COLORS};
+    program_data p_program_data = (program_data) {&screenWidth, &screenHeight, &camera, &mini_camera, &corner_render, &mode, all_points, &points_no, &points_length, selected_points_idxs, &save_vector, &grid_point, &grid_up, STATE_COLORS};
 
     // MAIN LOOP
     while (!WindowShouldClose())
