@@ -53,7 +53,7 @@ void ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_l
 		*points_length *= 2;
 	}
 	
-	(*points)[*points_no++] = point;
+	(*points)[(*points_no)++] = point;
 	
 	
 }
