@@ -75,7 +75,7 @@ void POINT_SELECT_FUNCTION(program_data* data) {
 			//*data->program_state = VIEW_MODE;
 			
 			//ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_length, Vector3 point)
-			ADD_POINT(&data->all_points, data->points_no, data->points_length, draw_point);
+			ADD_POINT(&data->all_points, &data->selected_points_idxs, data->points_no, data->points_length, draw_point);
 			*data->program_state = VIEW_MODE;
 		}
 		

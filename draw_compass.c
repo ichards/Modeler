@@ -2,6 +2,7 @@
 #include "draw_util.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
     // DRAW XYZ AXIS ONTO SEPERATE RENDER INSTANCE
@@ -43,11 +44,28 @@ void DRAW_POINTS(Vector3* points, unsigned int points_no, int* selected_points_i
 	
 }
 
-void ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_length, Vector3 point) {
+void DRAW_FACES(Vector3* points, int* face_idxs) {
+	
+	int current_idx = 0;
+	Vector3 tri[3];
+
+	while (face_idxs[current_idx] != -1) {
+		tri[0] = points[face_idxs[current_idx++]];
+		tri[1] = points[face_idxs[current_idx++]];
+		tri[2] = points[face_idxs[current_idx++]];
+
+		DrawTriangle3D(tri[0], tri[1], tri[2], BLUE);
+		DrawTriangle3D(tri[2], tri[1], tri[0], BLUE);
+	}
+	
+}
+
+void ADD_POINT(Vector3** points, int** selected_points, unsigned int* points_no, unsigned int* points_length, Vector3 point) {
 	
 	// need to resize
 	
 	if (*points_no >= (*points_length) - 1) {
+		printf("resizing from %d to %d\n", *points_length, *points_length * 2);
 		Vector3* new_points = malloc(sizeof(Vector3) * (*points_length * 2));
 		memset(new_points, 0, *points_length * 2 * sizeof(Vector3));
 		for (unsigned int i=0; i<*points_length; i++) {
@@ -55,6 +73,14 @@ void ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_l
 		}
 		free(*points);
 		*points = new_points;
+
+		int* new_selected_points = malloc(sizeof(int) * (*points_length * 2));
+		memset(new_selected_points, -1, *points_length * 2 * sizeof(int));
+		for (unsigned int i=0; i<*points_length; i++) {
+			new_selected_points[i] = (*selected_points)[i];
+		}
+		free(*selected_points);
+		*selected_points = new_selected_points;
 
 		(*points_length) *= 2;
 	}
@@ -64,3 +90,36 @@ void ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_l
 	
 	
 }
+
+/*
+void ADD_FACE(int** faces, int* selected_points,) {
+	
+	// need to resize
+	
+	if (*points_no >= (*points_length) - 1) {
+		printf("resizing from %d to %d\n", *points_length, *points_length * 2);
+		Vector3* new_points = malloc(sizeof(Vector3) * (*points_length * 2));
+		memset(new_points, 0, *points_length * 2 * sizeof(Vector3));
+		for (unsigned int i=0; i<*points_length; i++) {
+			new_points[i] = (*points)[i];
+		}
+		free(*points);
+		*points = new_points;
+
+		int* new_selected_points = malloc(sizeof(int) * (*points_length * 2));
+		memset(new_selected_points, -1, *points_length * 2 * sizeof(int));
+		for (unsigned int i=0; i<*points_length; i++) {
+			new_selected_points[i] = (*selected_points)[i];
+		}
+		free(*selected_points);
+		*selected_points = new_selected_points;
+
+		(*points_length) *= 2;
+	}
+	
+	
+	(*points)[(*points_no)++] = point;
+	
+	
+}
+*/

@@ -81,13 +81,28 @@ void VIEW_FUNCTION(program_data* data) {
         }
 		
 		int click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data->main_camera), data->all_points, *(data->points_no));
-		
-		// add click point to selected_points
-		int i=-1;
-		while (data->selected_points_idxs[++i] != -1) {
-			printf("[%d]: %d\n", i, data->selected_points_idxs[i]);
-		}
-		data->selected_points_idxs[i] = click_point;
+
+        if (click_point == -1) {
+            int i=-1;
+            // clear selected points
+            while (data->selected_points_idxs[++i] != -1) {
+                data->selected_points_idxs[i] = -1;
+            }
+        } else {
+            // add click point to selected_points
+            // PROBLEM: technically, this could put duplicates into array which could give memory problems
+            int i=-1;
+            while (data->selected_points_idxs[++i] != -1) {
+                printf("[%d]: %d\n", i, data->selected_points_idxs[i]);
+            }
+            data->selected_points_idxs[i] = click_point;
+        }
+    }
+
+    if (IsKeyPressed(KEY_F)) {
+        data->face_idxs[0] = data->selected_points_idxs[0];
+        data->face_idxs[1] = data->selected_points_idxs[1];
+        data->face_idxs[2] = data->selected_points_idxs[2];
     }
 
 
@@ -110,7 +125,7 @@ void VIEW_FUNCTION(program_data* data) {
 			
 			DRAW_POINTS(data->all_points, *data->points_no, data->selected_points_idxs);
 
-
+            DRAW_FACES(data->all_points, data->face_idxs);
 
         EndMode3D();
 

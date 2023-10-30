@@ -50,18 +50,18 @@ int main(void)
 
     view_fun = &VIEW_FUNCTION;
 	
-	unsigned int points_length = 3;
+	unsigned int points_length = 10;
 
     Vector3* all_points = malloc(points_length * sizeof(Vector3));
     memset(all_points, 0, points_length * sizeof(Vector3));
 	
 	unsigned int points_no = 0;
 	
-	int selected_points_idxs[points_length];
+	int* selected_points_idxs = malloc(points_length * sizeof(int));
 	memset(selected_points_idxs, -1, points_length * sizeof(int));
 	
-	int face_idxs = malloc(points_length * sizeof(int));
-	memset(face_idxs, -1, points_length * sizeof(int));
+	int* face_idxs = malloc(points_length * 2 * sizeof(int));
+	memset(face_idxs, -1, points_length * 2 * sizeof(int));
 
     Vector3 save_vector = V3(0, 0, 0);
 
