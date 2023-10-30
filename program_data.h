@@ -16,9 +16,7 @@ typedef enum {
 
 // DECLARING PROGRAM DATA
 typedef struct {
-    const int* window_width;
-    const int* window_height;
-    Camera* main_camera;
+	Camera* main_camera;
     Camera* mini_camera;
     RenderTexture2D* reference_render;
     STATE* program_state;

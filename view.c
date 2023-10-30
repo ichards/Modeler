@@ -98,7 +98,7 @@ void VIEW_FUNCTION(program_data* data) {
     	//ClearBackground(STATE_COLORS[*(data->program_state)]);
 		ClearBackground(data->colors[*(data->program_state)]);
 
-		DrawRectangle(10, 10, *(data->window_width) - 20, *(data->window_height) - 20, GRAY);
+		DrawRectangle(10, 10, GetScreenWidth() - 20, GetScreenWidth() - 20, GRAY);
 
         BeginMode3D(*data->main_camera);
 
@@ -113,7 +113,7 @@ void VIEW_FUNCTION(program_data* data) {
 
         EndMode3D();
 
-        DrawTexture(data->reference_render->texture, 0, *data->window_height - (*data->window_width / 8), WHITE);
+        DrawTexture(data->reference_render->texture, 0, GetScreenWidth() - (GetScreenWidth() / 8), WHITE);
 
 
     EndDrawing();

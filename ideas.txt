@@ -5,3 +5,5 @@ make an enum to programmatically derive xyz. like v3[y] = 0, or v3[1] = 0. will 
 make camera smoothly move to grid center when entering point_selection mode
 
 make all functions use program_data* as parameter to ease work
+
+remove screenwidth and height from program_data and just give window
