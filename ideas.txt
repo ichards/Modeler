@@ -9,3 +9,5 @@ make all functions use program_data* as parameter to ease work
 remove screenwidth and height from program_data and just give window
 
 i had a problem where i couldn't free an array since it was on the stack and not on the heap. im so goofy *sighs*
+
+change every array to malloc for safety. implement faces. implement making faces and whatnot.

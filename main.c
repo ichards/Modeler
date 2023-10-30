@@ -60,8 +60,8 @@ int main(void)
 	int selected_points_idxs[points_length];
 	memset(selected_points_idxs, -1, points_length * sizeof(int));
 	
-	//int face_idxs[points_length];
-	//memset(face_idxs, -1, points_length);
+	int face_idxs = malloc(points_length * sizeof(int));
+	memset(face_idxs, -1, points_length * sizeof(int));
 
     Vector3 save_vector = V3(0, 0, 0);
 
@@ -74,7 +74,7 @@ int main(void)
 		PURPLE	// POINT_MODE_PLACE
 	};
 
-    program_data p_program_data = (program_data) {&camera, &mini_camera, &corner_render, &mode, all_points, &points_no, &points_length, selected_points_idxs, &save_vector, &grid_point, &grid_up, STATE_COLORS};
+    program_data p_program_data = (program_data) {&camera, &mini_camera, &corner_render, &mode, all_points, &points_no, &points_length, face_idxs, selected_points_idxs, &save_vector, &grid_point, &grid_up, STATE_COLORS};
 
     // MAIN LOOP
     while (!WindowShouldClose())
