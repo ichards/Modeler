@@ -49,7 +49,7 @@ int main(void)
 
     view_fun = &VIEW_FUNCTION;
 	
-	unsigned int points_length = 20;
+	unsigned int points_length = 3;
 
     Vector3 all_points[points_length];
     memset(all_points, 0, points_length);
@@ -57,7 +57,10 @@ int main(void)
 	unsigned int points_no = 0;
 	
 	int selected_points_idxs[points_length];
-	memset(selected_points_idxs, -1, points_length);
+	memset(selected_points_idxs, -1, points_length * sizeof(int));
+	
+	//int face_idxs[points_length];
+	//memset(face_idxs, -1, points_length);
 
     Vector3 save_vector = V3(0, 0, 0);
 

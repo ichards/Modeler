@@ -67,7 +67,7 @@ void GRID_SELECT_FUNCTION(program_data* data) {
             if (axis_collision.hit) {
                 DrawSphere(input_point, 0.25, BLACK);
                 //draw_grid(V3((int) (axis_collision.point.x), (int) (axis_collision.point.y), (int) (axis_collision.point.z)), 5, 1, up, BLACK);
-		draw_grid(input_point, 5, 1, up, BLACK);
+				draw_grid(input_point, 5, 1, up, BLACK);
 
             }
 

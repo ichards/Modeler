@@ -30,21 +30,26 @@ void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
 }
 
 void DRAW_POINTS(Vector3* points, unsigned int points_no, int* selected_points_idxs) {
+	
 	for (unsigned int i=0; i<points_no; i++) {
 		DrawSphere(points[i], 0.5, BLACK);
 	}
-	unsigned int i = -1;
+	
+	int i = -1;
 	while (selected_points_idxs[++i] != -1) {
 		DrawSphere(points[selected_points_idxs[i]], 0.6, BLUE);
 	}
+	
+	
 }
 
 void ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_length, Vector3 point) {
 	
 	// need to resize
+	/*
 	if (*points_no >= *points_length) {
 		Vector3* new_points = malloc(sizeof(Vector3) * (*points_length * 2));
-		memset(new_points, 0, *points_length * 2);
+		memset(new_points, 0, *points_length * 2 * sizeof(Vector3));
 		for (unsigned int i=0; i<*points_length; i++) {
 			new_points[i] = (*points)[i];
 		}
@@ -52,6 +57,14 @@ void ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_l
 		*points = new_points;
 		*points_length *= 2;
 	}
+	*/
+	if (*points_length < 5) {
+		*points_length = 20;
+		free(*points);
+		*points = malloc(sizeof(Vector3) * 20);
+		memset(*points, 0, 20);
+	}
+	
 	
 	(*points)[(*points_no)++] = point;
 	

@@ -4,6 +4,8 @@
 
 #include "raymath.h"
 
+#include <stdio.h>
+
 //void VIEW_FUNCTION(Camera* camera, Camera *mini_camera, RenderTexture2D* corner_render, const int* screenWidth, const int* screenHeight, STATE* mode) {
 void VIEW_FUNCTION(program_data* data) {
 
@@ -79,12 +81,15 @@ void VIEW_FUNCTION(program_data* data) {
         }
 		
 		int click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data->main_camera), data->all_points, *(data->points_no));
+		
 		// add click point to selected_points
 		int i=-1;
 		while (data->selected_points_idxs[++i] != -1) {
+			printf("[%d]: %d\n", i, data->selected_points_idxs[i]);
 		}
+		/*
 		data->selected_points_idxs[i] = click_point;
-		
+		*/
     }
 
 
@@ -107,8 +112,6 @@ void VIEW_FUNCTION(program_data* data) {
 			
 			DRAW_POINTS(data->all_points, *data->points_no, data->selected_points_idxs);
 
-
-            DrawSphere(data->all_points[0], 0.5, BLACK);
 
 
         EndMode3D();
