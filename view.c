@@ -87,9 +87,7 @@ void VIEW_FUNCTION(program_data* data) {
 		while (data->selected_points_idxs[++i] != -1) {
 			printf("[%d]: %d\n", i, data->selected_points_idxs[i]);
 		}
-		/*
 		data->selected_points_idxs[i] = click_point;
-		*/
     }
 
 

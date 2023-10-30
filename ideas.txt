@@ -7,3 +7,5 @@ make camera smoothly move to grid center when entering point_selection mode
 make all functions use program_data* as parameter to ease work
 
 remove screenwidth and height from program_data and just give window
+
+i had a problem where i couldn't free an array since it was on the stack and not on the heap. im so goofy *sighs*

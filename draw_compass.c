@@ -46,8 +46,8 @@ void DRAW_POINTS(Vector3* points, unsigned int points_no, int* selected_points_i
 void ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_length, Vector3 point) {
 	
 	// need to resize
-	/*
-	if (*points_no >= *points_length) {
+	
+	if (*points_no >= (*points_length) - 1) {
 		Vector3* new_points = malloc(sizeof(Vector3) * (*points_length * 2));
 		memset(new_points, 0, *points_length * 2 * sizeof(Vector3));
 		for (unsigned int i=0; i<*points_length; i++) {
@@ -55,14 +55,8 @@ void ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_l
 		}
 		free(*points);
 		*points = new_points;
-		*points_length *= 2;
-	}
-	*/
-	if (*points_length < 5) {
-		*points_length = 20;
-		free(*points);
-		*points = malloc(sizeof(Vector3) * 20);
-		memset(*points, 0, 20);
+
+		(*points_length) *= 2;
 	}
 	
 	

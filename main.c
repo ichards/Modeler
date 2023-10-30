@@ -1,5 +1,6 @@
 
 #include <string.h>
+#include <stdlib.h>
 #include "draw_util.h"
 #include "program_data.h"
 
@@ -51,8 +52,8 @@ int main(void)
 	
 	unsigned int points_length = 3;
 
-    Vector3 all_points[points_length];
-    memset(all_points, 0, points_length);
+    Vector3* all_points = malloc(points_length * sizeof(Vector3));
+    memset(all_points, 0, points_length * sizeof(Vector3));
 	
 	unsigned int points_no = 0;
 	
