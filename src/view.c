@@ -75,9 +75,7 @@ void VIEW_FUNCTION(program_data* data) {
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         if (x_collision.hit || y_collision.hit || z_collision.hit) {
-            if (*data->program_state == VIEW_MODE) {
-                *data->program_state = POINT_MODE_SELECT;
-            }
+            *data->program_state = GRID_SELECT;
         }
 		
 		int click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data->main_camera), data->all_points, *(data->points_no));

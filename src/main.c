@@ -38,7 +38,7 @@ int main(void)
     mini_camera.position = Vector3Negate(Vector3Normalize(camera.position));
 
     // INITIALIZE PROGRAM STATE
-    STATE mode = VIEW_MODE;
+    STATE mode = VIEW;
     STATE_FUNCTION mode_functions[] = {&VIEW_FUNCTION, &GRID_SELECT_FUNCTION, &POINT_SELECT_FUNCTION};
 
     // INITIALIZE RENDERING NONSENSE
@@ -46,9 +46,6 @@ int main(void)
 
     RenderTexture2D corner_render = LoadRenderTexture(screenWidth / 8, screenWidth / 8);
 
-    STATE_FUNCTION view_fun;
-
-    view_fun = &VIEW_FUNCTION;
 	
 	unsigned int points_length = 10;
 
@@ -69,9 +66,9 @@ int main(void)
     Vector3 grid_up = V3(0, 0, 0);
 	
 	Color STATE_COLORS[] = {
-		BLACK,	// VIEW_MODE
-		RED,	// POINT_MODE_SELECT
-		PURPLE	// POINT_MODE_PLACE
+		BLACK,	// VIEW
+		RED,	// GRID_SELECT
+		PURPLE	// POINT_SELECT
 	};
 
     program_data p_program_data = (program_data) {&camera, &mini_camera, &corner_render, &mode, all_points, &points_no, &points_length, face_idxs, selected_points_idxs, &save_vector, &grid_point, &grid_up, STATE_COLORS};
