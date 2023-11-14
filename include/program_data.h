@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "../dynamic_arrays/dynamic_array.h"
 
 #ifndef NULL
 #define NULL ((void*)0)
@@ -20,11 +21,9 @@ typedef struct {
     Camera* mini_camera;
     RenderTexture2D* reference_render;
     STATE* program_state;
-    Vector3* all_points;
-	unsigned int* points_no;
-	unsigned int* points_length;
-	int* face_idxs;
-	int* selected_points_idxs;
+    Associative_Array points;
+	Associative_Array sel_points;
+	Associative_Array face_points; // this part is controversial
     Vector3* save_vector;
     Vector3* grid_point;
     Vector3* grid_up;

@@ -7,9 +7,9 @@
 #include "../include/raylib.h"
 #include "../include/raymath.h"
 
+#include "../dynamic_arrays/dynamic_array.h"
+
 // RUN FUNCTIONS
-
-
 // add a union parameter that lets you add input to the next state so that
 // it stores minimal data that's interpreted depending on the state
 //typedef void (*STATE_FUNCTION) (Camera*, Camera*, RenderTexture2D*, const int*, const int*, STATE*);
@@ -46,7 +46,7 @@ int main(void)
 
     RenderTexture2D corner_render = LoadRenderTexture(screenWidth / 8, screenWidth / 8);
 
-	
+	/* old stuff.... no good
 	unsigned int points_length = 10;
 
     Vector3* all_points = malloc(points_length * sizeof(Vector3));
@@ -59,7 +59,19 @@ int main(void)
 	
 	int* face_idxs = malloc(points_length * 2 * sizeof(int));
 	memset(face_idxs, -1, points_length * 2 * sizeof(int));
+*/
+	
+	// the new stuff
+	Vector3 point_default = V3(0, 0, 0);
+	Associative_Array points = create_ada(create_da(malloc(sizeof(Vector3) * 8), &point_default, sizeof(Vector3), 0, 8));
 
+	int sel_point_default = V3(0, 0, 0);
+	Associative_Array sel_points = create_ada(create_da(malloc(sizeof(int) * 8), &sel_point_default, sizeof(int), 0, 8));
+	
+	// is an Associative Array ideal?
+	int face_point_default = V3(0, 0, 0);
+	Associative_Array face_points = create_ada(create_da(malloc(sizeof(int) * 8), &face_point_default, sizeof(int), 0, 8));
+	
     Vector3 save_vector = V3(0, 0, 0);
 
     Vector3 grid_point = V3(0, 0, 0);
