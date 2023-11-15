@@ -1,5 +1,8 @@
 #include <stdlib.h>
 
+#ifndef DYNAMIC_ARRAYS
+#define DYNAMIC_ARRAYS
+
 typedef unsigned char byte;
 
 // array that automatically grows as needed
@@ -34,3 +37,5 @@ void ada_push(Associative_Array*, void*);
 void ada_insert(Associative_Array*, void*, size_t);
 
 void ada_remove(Associative_Array*, size_t);
+
+#endif

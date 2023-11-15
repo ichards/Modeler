@@ -30,8 +30,8 @@ void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
     EndTextureMode();
 }
 
-void DRAW_POINTS(Vector3* points, unsigned int points_no, int* selected_points_idxs) {
-	
+void DRAW_POINTS(Associative_Array points, Dynamic_Array sel_points) {
+	/* to be implemented
 	for (unsigned int i=0; i<points_no; i++) {
 		DrawSphere(points[i], 0.5, BLACK);
 	}
@@ -40,12 +40,12 @@ void DRAW_POINTS(Vector3* points, unsigned int points_no, int* selected_points_i
 	while (selected_points_idxs[++i] != -1) {
 		DrawSphere(points[selected_points_idxs[i]], 0.6, BLUE);
 	}
-	
+	*/
 	
 }
 
-void DRAW_FACES(Vector3* points, int* face_idxs) {
-	
+void DRAW_FACES(Associative_Array faces) {
+	/*
 	int current_idx = 0;
 	Vector3 tri[3];
 
@@ -57,12 +57,15 @@ void DRAW_FACES(Vector3* points, int* face_idxs) {
 		DrawTriangle3D(tri[0], tri[1], tri[2], BLUE);
 		DrawTriangle3D(tri[2], tri[1], tri[0], BLUE);
 	}
+	*/
 	
 }
 
-void ADD_POINT(Vector3** points, int** selected_points, unsigned int* points_no, unsigned int* points_length, Vector3 point) {
+void ADD_POINT(Associative_Array* points, Vector3 point) {
 	
+	/* to be implemented
 	// need to resize
+	
 	
 	if (*points_no >= (*points_length) - 1) {
 		printf("resizing from %d to %d\n", *points_length, *points_length * 2);
@@ -87,7 +90,7 @@ void ADD_POINT(Vector3** points, int** selected_points, unsigned int* points_no,
 	
 	
 	(*points)[(*points_no)++] = point;
-	
+	*/
 	
 }
 

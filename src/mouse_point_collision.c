@@ -2,7 +2,8 @@
 
 // point_cnt > points_no
 // returns index to point ray collides with, null if nothing. point is closest point
-int MOUSE_POINT_COLLISION(Ray mouse_ray, Vector3* points, unsigned int points_no) {
+int MOUSE_POINT_COLLISION(Ray mouse_ray, Associative_Array points) {
+/* to be implemented
 	int hit_point = -1;
 	float min_distance = 0;
 	for (int i=0; i<points_no; i++) {
@@ -18,5 +19,6 @@ int MOUSE_POINT_COLLISION(Ray mouse_ray, Vector3* points, unsigned int points_no
 		}
 	}
 	
-	return hit_point;
+	return hit_point;*/
+	return 0;
 }

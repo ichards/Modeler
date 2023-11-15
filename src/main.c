@@ -63,14 +63,14 @@ int main(void)
 	
 	// the new stuff
 	Vector3 point_default = V3(0, 0, 0);
-	Associative_Array points = create_ada(create_da(malloc(sizeof(Vector3) * 8), &point_default, sizeof(Vector3), 0, 8));
+	Associative_Array all_points = create_ada(create_da(malloc(sizeof(Vector3) * 8), &point_default, sizeof(Vector3), 0, 8));
 
-	int sel_point_default = V3(0, 0, 0);
-	Associative_Array sel_points = create_ada(create_da(malloc(sizeof(int) * 8), &sel_point_default, sizeof(int), 0, 8));
+	size_t sel_point_default = 0;
+	Dynamic_Array sel_points = create_da(malloc(sizeof(size_t) * 8), &sel_point_default, sizeof(size_t), 0, 8);
 	
 	// is an Associative Array ideal?
-	int face_point_default = V3(0, 0, 0);
-	Associative_Array face_points = create_ada(create_da(malloc(sizeof(int) * 8), &face_point_default, sizeof(int), 0, 8));
+	size_t face_point_default = 0;
+	Associative_Array face_points = create_ada(create_da(malloc(sizeof(size_t) * 8), &face_point_default, sizeof(size_t), 0, 8));
 	
     Vector3 save_vector = V3(0, 0, 0);
 
@@ -83,7 +83,7 @@ int main(void)
 		PURPLE	// POINT_SELECT
 	};
 
-    program_data p_program_data = (program_data) {&camera, &mini_camera, &corner_render, &mode, all_points, &points_no, &points_length, face_idxs, selected_points_idxs, &save_vector, &grid_point, &grid_up, STATE_COLORS};
+    program_data p_program_data = (program_data) {&camera, &mini_camera, &corner_render, &mode, &all_points, &sel_points, &face_points, &save_vector, &grid_point, &grid_up, STATE_COLORS};
 
     // MAIN LOOP
     while (!WindowShouldClose())

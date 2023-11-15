@@ -75,7 +75,8 @@ void POINT_SELECT_FUNCTION(program_data* data) {
 			//*data->program_state = VIEW_MODE;
 			
 			//ADD_POINT(Vector3** points, unsigned int* points_no, unsigned int* points_length, Vector3 point)
-			ADD_POINT(&data->all_points, &data->selected_points_idxs, data->points_no, data->points_length, draw_point);
+			//ADD_POINT(&data->all_points, &data->selected_points_idxs, data->points_no, data->points_length, draw_point);
+			ADD_POINT(data->points, draw_point);
 			*data->program_state = VIEW;
 		}
 		
@@ -114,7 +115,7 @@ void POINT_SELECT_FUNCTION(program_data* data) {
             // DRAW MAIN GRID
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 			
-			DRAW_POINTS(data->all_points, *data->points_no, data->selected_points_idxs);
+			DRAW_POINTS(*(data->points), *(data->sel_points));
 
 			draw_grid2(*data->grid_point, 9, 1, *data->grid_up, BLACK);
 

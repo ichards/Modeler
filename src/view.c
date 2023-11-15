@@ -78,11 +78,14 @@ void VIEW_FUNCTION(program_data* data) {
             *data->program_state = GRID_SELECT;
         }
 		
-		int click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data->main_camera), data->all_points, *(data->points_no));
+		int click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data->main_camera), *(data->points));
 
+		// old stuff
+		/*
         if (click_point == -1) {
             int i=-1;
             // clear selected points
+			
             while (data->selected_points_idxs[++i] != -1) {
                 data->selected_points_idxs[i] = -1;
             }
@@ -95,13 +98,16 @@ void VIEW_FUNCTION(program_data* data) {
             }
             data->selected_points_idxs[i] = click_point;
         }
+		*/
     }
 
+	// old
+	/*
     if (IsKeyPressed(KEY_F)) {
         data->face_idxs[0] = data->selected_points_idxs[0];
         data->face_idxs[1] = data->selected_points_idxs[1];
         data->face_idxs[2] = data->selected_points_idxs[2];
-    }
+    }*/
 
 
 
@@ -121,9 +127,9 @@ void VIEW_FUNCTION(program_data* data) {
             // DRAW MAIN GRID
             draw_axis(V3(0, 0, 0), 10, x_color, y_color, z_color);
 			
-			DRAW_POINTS(data->all_points, *data->points_no, data->selected_points_idxs);
+			DRAW_POINTS(*(data->points), *(data->sel_points));
 
-            DRAW_FACES(data->all_points, data->face_idxs);
+            DRAW_FACES(*(data->face_points));
 
         EndMode3D();
 

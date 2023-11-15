@@ -21,20 +21,27 @@ typedef struct {
     Camera* mini_camera;
     RenderTexture2D* reference_render;
     STATE* program_state;
-    Associative_Array points;
-	Associative_Array sel_points;
-	Associative_Array face_points; // this part is controversial
+    Associative_Array* points;
+	Dynamic_Array* sel_points;
+	Associative_Array* face_points; // this part is controversial
     Vector3* save_vector;
     Vector3* grid_point;
     Vector3* grid_up;
 	Color* colors;
 } program_data;
 
+// Create face
+typedef struct {
+	size_t v1;
+	size_t v2;
+	size_t v3;
+} face;
+
 void DRAW_COMPASS(RenderTexture2D*, Camera*);
 
-void DRAW_POINTS(Vector3*, unsigned int, int*);
+void DRAW_POINTS(Associative_Array, Dynamic_Array);
 
-void DRAW_FACES(Vector3*, int*);
+void DRAW_FACES(Associative_Array);
 
 void VIEW_FUNCTION(program_data*);
 
@@ -42,6 +49,6 @@ void GRID_SELECT_FUNCTION(program_data*);
 
 void POINT_SELECT_FUNCTION(program_data*);
 
-int MOUSE_POINT_COLLISION(Ray, Vector3*, unsigned int);
+int MOUSE_POINT_COLLISION(Ray, Associative_Array);
 
-void ADD_POINT(Vector3**, int**, unsigned int*, unsigned int*, Vector3);
+void ADD_POINT(Associative_Array*, Vector3);
