@@ -38,4 +38,6 @@ void ada_insert(Associative_Array*, void*, size_t);
 
 void ada_remove(Associative_Array*, size_t);
 
+int ada_is_hole(Associative_Array, size_t);
+
 #endif

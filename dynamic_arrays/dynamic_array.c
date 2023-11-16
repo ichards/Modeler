@@ -139,6 +139,15 @@ void ada_insert(Associative_Array* ada, void* val, size_t idx) {
 	}
 }
 
+int ada_is_hole(Associative_Array ada, size_t idx) {
+	byte* ref_bytes = (byte*) ada.refs.p;
+	size_t cur_byte = idx / 8;
+	size_t cur_bit = idx % 8;
+	if ((ref_bytes[cur_byte] & (0b10000000 >> cur_bit)) > 0) {
+		return 1;
+	}
+	return 0;
+}
 
 void ada_remove(Associative_Array* ada, size_t idx) {
 	// this will be different from da_remove

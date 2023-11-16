@@ -31,17 +31,14 @@ void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
 }
 
 void DRAW_POINTS(Associative_Array points, Dynamic_Array sel_points) {
-	/* to be implemented
-	for (unsigned int i=0; i<points_no; i++) {
-		DrawSphere(points[i], 0.5, BLACK);
+	Vector3* points_p = points.vals.p;
+	for (size_t i = 0; i < points.vals.current_length + points.empties; i++) {
+		if (ada_is_hole(points, i)) {
+			continue;
+		}
+		// draw it
+		DrawSphere(points_p[i], 0.3, BLACK);
 	}
-	
-	int i = -1;
-	while (selected_points_idxs[++i] != -1) {
-		DrawSphere(points[selected_points_idxs[i]], 0.6, BLUE);
-	}
-	*/
-	
 }
 
 void DRAW_FACES(Associative_Array faces) {
@@ -62,35 +59,8 @@ void DRAW_FACES(Associative_Array faces) {
 }
 
 void ADD_POINT(Associative_Array* points, Vector3 point) {
-	
-	/* to be implemented
-	// need to resize
-	
-	
-	if (*points_no >= (*points_length) - 1) {
-		printf("resizing from %d to %d\n", *points_length, *points_length * 2);
-		Vector3* new_points = malloc(sizeof(Vector3) * (*points_length * 2));
-		memset(new_points, 0, *points_length * 2 * sizeof(Vector3));
-		for (unsigned int i=0; i<*points_length; i++) {
-			new_points[i] = (*points)[i];
-		}
-		free(*points);
-		*points = new_points;
 
-		int* new_selected_points = malloc(sizeof(int) * (*points_length * 2));
-		memset(new_selected_points, -1, *points_length * 2 * sizeof(int));
-		for (unsigned int i=0; i<*points_length; i++) {
-			new_selected_points[i] = (*selected_points)[i];
-		}
-		free(*selected_points);
-		*selected_points = new_selected_points;
-
-		(*points_length) *= 2;
-	}
-	
-	
-	(*points)[(*points_no)++] = point;
-	*/
+	ada_push(points, &point);
 	
 }
 
