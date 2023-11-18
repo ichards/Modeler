@@ -80,6 +80,15 @@ void VIEW_FUNCTION(program_data* data) {
 		
 		int click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data->main_camera), *(data->points));
 
+        if (click_point == -1) {
+            for (int i=0; i<data->sel_points->current_length; i++) {
+                da_remove(data->sel_points, 0);
+            }
+        } else {
+            size_t click_point_s = click_point;
+            da_push(data->sel_points, (void*)&click_point_s);
+        }
+
 		// old stuff
 		/*
         if (click_point == -1) {
