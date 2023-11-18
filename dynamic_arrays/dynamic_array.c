@@ -79,21 +79,24 @@ void da_remove(Dynamic_Array* da, size_t idx) {
 
 Associative_Array create_ada(Dynamic_Array da) {
 	static byte ref_def = 0b11111111;
+	byte* bytep = malloc(sizeof(byte) * 1);
+	bytep[0] = 0b11111111;
 	Associative_Array ada = (Associative_Array) {
 		da,
-		(Dynamic_Array) {malloc(sizeof(byte) * 1), (void*) &ref_def, sizeof(byte), 0, 8}
+		(Dynamic_Array) {bytep, (void*) &ref_def, sizeof(byte), 0, 1}
 		};
 	return ada;
 }
-	
+
 
 void ada_push(Associative_Array* ada, void* val) {
 	if (ada->empties == 0) {
 		size_t new_val_idx = ada->vals.current_length;
 		da_push(&ada->vals, val);
-		if (ada->vals.max_length % 8 == 1) { // needs more bytes for refs
+		if (ada->vals.current_length % 8 == 0) { // needs more bytes for refs
 			byte new_ref = 0b11111111;
-			da_push(&ada->refs, (void*) &new_ref);
+			da_grow(&(ada->refs));
+			//da_push(&ada->refs, (void*) &new_ref);
 		}
 		// mark in refs
 		size_t val_byte = new_val_idx / 8;
@@ -180,7 +183,21 @@ void ada_remove(Associative_Array* ada, size_t idx) {
 	ada->vals.current_length--;
 }
 
-
+#include <stdio.h>
+void ada_print_ref(Associative_Array ada) {
+	byte* ada_ref_bytes = (byte*) ada.refs.p;
+	printf("byte count: %d\n", ada.refs.max_length);
+	for (size_t i=0; i<ada.refs.max_length; i++) {
+		for (int j=7; j>=0; j--) {
+			int bit = 0;
+			if ((ada_ref_bytes[i] >> j) & 0b00000001) {
+				bit = 1;
+			}
+			printf("%d", bit);
+		}
+		printf("\n");
+	}
+}
 
 
 

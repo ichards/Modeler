@@ -40,4 +40,6 @@ void ada_remove(Associative_Array*, size_t);
 
 int ada_is_hole(Associative_Array, size_t);
 
+void ada_print_ref(Associative_Array);
+
 #endif

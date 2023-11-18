@@ -68,6 +68,10 @@ void POINT_SELECT_FUNCTION(program_data* data) {
     if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
         EnableCursor();
     }
+
+#include "../dynamic_arrays/dynamic_array.h"
+
+
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 		if (axis_collision.hit) {
 			
@@ -78,6 +82,7 @@ void POINT_SELECT_FUNCTION(program_data* data) {
 			//ADD_POINT(&data->all_points, &data->selected_points_idxs, data->points_no, data->points_length, draw_point);
 			ADD_POINT(data->points, draw_point);
 			*data->program_state = VIEW;
+			ada_print_ref(*data->points);
 		}
 		
     }
