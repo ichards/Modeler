@@ -85,6 +85,7 @@ void VIEW_FUNCTION(program_data* data) {
                 da_remove(data->sel_points, 0);
             }
         } else {
+            printf("clicked point\n");
             size_t click_point_s = click_point;
             da_push(data->sel_points, (void*)&click_point_s);
         }
