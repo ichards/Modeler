@@ -81,34 +81,17 @@ void VIEW_FUNCTION(program_data* data) {
 		int click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data->main_camera), *(data->points));
 
         if (click_point == -1) {
-            for (int i=0; i<data->sel_points->current_length; i++) {
-                da_remove(data->sel_points, 0);
+            //for (int i=0; i<data->sel_points->current_length; i++) {
+            if (data->sel_points->current_length > 0) {
+                da_clear(data->sel_points);
             }
         } else {
             printf("clicked point\n");
             size_t click_point_s = click_point;
             da_push(data->sel_points, (void*)&click_point_s);
+            printf("sel_points now %d large\n", data->sel_points->current_length);
         }
 
-		// old stuff
-		/*
-        if (click_point == -1) {
-            int i=-1;
-            // clear selected points
-			
-            while (data->selected_points_idxs[++i] != -1) {
-                data->selected_points_idxs[i] = -1;
-            }
-        } else {
-            // add click point to selected_points
-            // PROBLEM: technically, this could put duplicates into array which could give memory problems
-            int i=-1;
-            while (data->selected_points_idxs[++i] != -1) {
-                printf("[%d]: %d\n", i, data->selected_points_idxs[i]);
-            }
-            data->selected_points_idxs[i] = click_point;
-        }
-		*/
     }
 
 	// old

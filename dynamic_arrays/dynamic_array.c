@@ -77,6 +77,19 @@ void da_remove(Dynamic_Array* da, size_t idx) {
 	da->current_length--;
 }
 
+void da_clear(Dynamic_Array* da) {
+	byte* def_val_bytes = (byte*)da->def_val;
+	byte* da_bytes = (byte*)da->p;
+
+	for (size_t i=0; i<da->current_length; i++) {
+		for (size_t j=0; j<da->unit_size; j++) {
+			da_bytes[(i*(da->unit_size)) + j] = def_val_bytes[j];
+		}
+	}
+
+	da->current_length = 0;
+}
+
 Associative_Array create_ada(Dynamic_Array da) {
 	static byte ref_def = 0b11111111;
 	byte* bytep = malloc(sizeof(byte) * 1);
