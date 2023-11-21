@@ -102,6 +102,9 @@ void VIEW_FUNCTION(program_data* data) {
         data->face_idxs[2] = data->selected_points_idxs[2];
     }*/
 
+    if (IsKeyPressed(KEY_D)) {
+        
+    }
 
 
 	DRAW_COMPASS(data->reference_render, data->mini_camera);

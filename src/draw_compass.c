@@ -46,7 +46,7 @@ void DRAW_POINTS(Associative_Array points, Dynamic_Array sel_points) {
 	}
 }
 
-void DRAW_FACES(Associative_Array faces) {
+void DRAW_FACES(Dynamic_Array faces) {
 	/*
 	int current_idx = 0;
 	Vector3 tri[3];

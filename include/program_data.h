@@ -23,7 +23,7 @@ typedef struct {
     STATE* program_state;
     Associative_Array* points;
 	Dynamic_Array* sel_points;
-	Associative_Array* face_points; // this part is controversial
+	Dynamic_Array* face_points; // this part is controversial
     Vector3* save_vector;
     Vector3* grid_point;
     Vector3* grid_up;
@@ -41,7 +41,7 @@ void DRAW_COMPASS(RenderTexture2D*, Camera*);
 
 void DRAW_POINTS(Associative_Array, Dynamic_Array);
 
-void DRAW_FACES(Associative_Array);
+void DRAW_FACES(Dynamic_Array);
 
 void VIEW_FUNCTION(program_data*);
 

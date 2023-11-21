@@ -68,9 +68,8 @@ int main(void)
 	size_t sel_point_default = 0;
 	Dynamic_Array sel_points = create_da(malloc(sizeof(size_t) * 8), &sel_point_default, sizeof(size_t), 0, 8);
 	
-	// is an Associative Array ideal?
 	size_t face_point_default = 0;
-	Associative_Array face_points = create_ada(create_da(malloc(sizeof(size_t) * 8), &face_point_default, sizeof(size_t), 0, 8));
+	Dynamic_Array face_points = create_da(malloc(sizeof(size_t) * 8), &face_point_default, sizeof(size_t), 0, 8);
 	
     Vector3 save_vector = V3(0, 0, 0);
 
