@@ -46,20 +46,6 @@ int main(void)
 
     RenderTexture2D corner_render = LoadRenderTexture(screenWidth / 8, screenWidth / 8);
 
-	/* old stuff.... no good
-	unsigned int points_length = 10;
-
-    Vector3* all_points = malloc(points_length * sizeof(Vector3));
-    memset(all_points, 0, points_length * sizeof(Vector3));
-	
-	unsigned int points_no = 0;
-	
-	int* selected_points_idxs = malloc(points_length * sizeof(int));
-	memset(selected_points_idxs, -1, points_length * sizeof(int));
-	
-	int* face_idxs = malloc(points_length * 2 * sizeof(int));
-	memset(face_idxs, -1, points_length * 2 * sizeof(int));
-*/
 	
 	// the new stuff
 	Vector3 point_default = V3(0, 0, 0);
@@ -69,7 +55,7 @@ int main(void)
 	Dynamic_Array sel_points = create_da(malloc(sizeof(size_t) * 8), &sel_point_default, sizeof(size_t), 0, 8);
 	
 	size_t face_point_default = 0;
-	Dynamic_Array face_points = create_da(malloc(sizeof(size_t) * 8), &face_point_default, sizeof(size_t), 0, 8);
+	Dynamic_Array face_points = create_da(malloc(sizeof(face) * 8), &face_point_default, sizeof(face), 0, 8);
 	
     Vector3 save_vector = V3(0, 0, 0);
 
