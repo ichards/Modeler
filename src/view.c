@@ -94,16 +94,15 @@ void VIEW_FUNCTION(program_data* data) {
 
     }
 
-	// old
-	/*
+	
     if (IsKeyPressed(KEY_F)) {
         data->face_idxs[0] = data->selected_points_idxs[0];
         data->face_idxs[1] = data->selected_points_idxs[1];
         data->face_idxs[2] = data->selected_points_idxs[2];
-    }*/
+    }
 
     if (IsKeyPressed(KEY_D)) {
-        
+        // delete a point
     }
 
 
@@ -125,7 +124,7 @@ void VIEW_FUNCTION(program_data* data) {
 			
 			DRAW_POINTS(*(data->points), *(data->sel_points));
 
-            DRAW_FACES(*(data->face_points));
+            DRAW_FACES(*(data->points), *(data->face_points));
 
         EndMode3D();
 

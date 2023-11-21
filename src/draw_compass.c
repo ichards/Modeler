@@ -46,21 +46,18 @@ void DRAW_POINTS(Associative_Array points, Dynamic_Array sel_points) {
 	}
 }
 
-void DRAW_FACES(Dynamic_Array faces) {
-	/*
-	int current_idx = 0;
-	Vector3 tri[3];
+void DRAW_FACES(Associative_Array points, Dynamic_Array faces) {
 
-	while (face_idxs[current_idx] != -1) {
-		tri[0] = points[face_idxs[current_idx++]];
-		tri[1] = points[face_idxs[current_idx++]];
-		tri[2] = points[face_idxs[current_idx++]];
+	face* faces_p = (face*) faces.p;
 
-		DrawTriangle3D(tri[0], tri[1], tri[2], BLUE);
-		DrawTriangle3D(tri[2], tri[1], tri[0], BLUE);
+	face current_face = {0};
+	Vector3* points_p = (Vector3*) points.vals.p;
+
+	for (size_t i=0; i<faces.current_length; i++) {
+		current_face = faces_p[i];
+		DrawTriangle3D(points_p[current_face.v1], points_p[current_face.v2], points_p[current_face.v3], BLUE);
+		DrawTriangle3D(points_p[current_face.v3], points_p[current_face.v2], points_p[current_face.v1], BLUE);
 	}
-	*/
-	
 }
 
 void ADD_POINT(Associative_Array* points, Vector3 point) {

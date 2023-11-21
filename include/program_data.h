@@ -41,7 +41,7 @@ void DRAW_COMPASS(RenderTexture2D*, Camera*);
 
 void DRAW_POINTS(Associative_Array, Dynamic_Array);
 
-void DRAW_FACES(Dynamic_Array);
+void DRAW_FACES(Associative_Array, Dynamic_Array);
 
 void VIEW_FUNCTION(program_data*);
 
