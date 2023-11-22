@@ -110,6 +110,13 @@ void VIEW_FUNCTION(program_data* data) {
 
     if (IsKeyPressed(KEY_D)) {
         // delete a point
+        // this will decimate the program if the points are used for a face
+        for (size_t i=0; i<data->sel_points->current_length; i++) {
+            size_t* spointsp = (size_t*) data->sel_points->p;
+            ada_remove(data->points, spointsp[i]);
+        }
+        da_clear(data->sel_points);
+
     }
 
 
