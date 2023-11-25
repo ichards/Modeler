@@ -20,7 +20,7 @@ void da_grow(Dynamic_Array* da) {
 		for (size_t j = 0; j<da->unit_size; j++) {
 			new_array[(i * da->unit_size) + j] = def_byte[j];
 		}
-	} 
+	}
 	// replace array
 	da->p = (void*) new_array;
 	// free old array
@@ -96,10 +96,12 @@ Associative_Array create_ada(Dynamic_Array da) {
 	bytep[0] = 0b11111111;
 	Associative_Array ada = (Associative_Array) {
 		da,
-		(Dynamic_Array) {bytep, (void*) &ref_def, sizeof(byte), 0, 1}
+		(Dynamic_Array) {bytep, (void*) &ref_def, sizeof(byte), 1, 1}
 		};
 	return ada;
 }
+
+#include <stdio.h>
 
 
 void ada_push(Associative_Array* ada, void* val) {
@@ -118,13 +120,25 @@ void ada_push(Associative_Array* ada, void* val) {
 		ref_bytes[val_byte] ^= (0b10000000 >> val_bit);
 		
 	} else {
-		// find leftmost one bit
+		printf("pushing into ada with empties\n");
+		printf("printing first byte\n");
+
 		byte* ref_bytes = (byte*) ada->refs.p;
+
+
+		for (size_t i=0; i<8; i++) {
+			printf("%d", (ref_bytes[0] & (0b10000000 >> i)) > 0);
+		}
+		printf("\ncurrent byte count: %d\n", ada->refs.current_length);
+
+		// find leftmost one bit
 		for (size_t cur_byte = 0; cur_byte<ada->refs.current_length; cur_byte++) {
-			if (ref_bytes != 0) { // there's a one in here somewhere
+			printf("checking bytes\n");
+			if (ref_bytes[cur_byte] != 0) { // there's a one in here somewhere
+				printf("found byte\n");
 				for (size_t cur_bit=0; cur_bit<8; cur_bit++) {
 					if ((ref_bytes[cur_byte] & (0b10000000 >> cur_bit)) > 0) { // found it!
-						
+						printf("empty at spot %d\n", cur_bit);
 						//ada->vals.p[(cur_byte * 8) + cur_bit];
 						byte* da_bytes = (byte*) (ada->vals.p);
 						byte* val_bytes = (byte*) val;
@@ -136,6 +150,7 @@ void ada_push(Associative_Array* ada, void* val) {
 						ref_bytes[cur_byte] ^= (0b10000000 >> cur_bit); // get rid of that 1
 					}
 				}
+				break;
 			}
 		}
 		ada->vals.current_length++;
@@ -196,7 +211,6 @@ void ada_remove(Associative_Array* ada, size_t idx) {
 	ada->vals.current_length--;
 }
 
-#include <stdio.h>
 void ada_print_ref(Associative_Array ada) {
 	byte* ada_ref_bytes = (byte*) ada.refs.p;
 	printf("byte count: %d\n", ada.refs.max_length);
