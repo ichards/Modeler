@@ -102,7 +102,7 @@ int debug_per_s(int addend) {
 	if (timer >= 120) {
 		ret = 1;
 	}
-	if (timer >= 122) {
+	if (timer >= 121) {
 		timer = 0;
 	}
 	return ret;

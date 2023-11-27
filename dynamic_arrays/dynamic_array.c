@@ -123,6 +123,8 @@ void ada_free(Associative_Array* ada) {
 	da_free(ada->vals);
 	da_free(ada->refs);
 }
+
+#include <stdio.h>
 	
 
 size_t ada_push(Associative_Array* ada, void* val) {
@@ -151,7 +153,7 @@ size_t ada_push(Associative_Array* ada, void* val) {
 			if (ref_bytes[cur_byte] != 0) { // there's a one in here somewhere
 				for (size_t cur_bit=0; cur_bit<8; cur_bit++) {
 					if ((ref_bytes[cur_byte] & (0b10000000 >> cur_bit)) > 0) { // found it!
-						
+						printf("index %d\n", cur_bit);
 						//ada->vals.p[(cur_byte * 8) + cur_bit];
 						byte* da_bytes = (byte*) (ada->vals.p);
 						byte* val_bytes = (byte*) val;
