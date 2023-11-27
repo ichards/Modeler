@@ -125,12 +125,20 @@ void ada_free(Associative_Array* ada) {
 }
 
 #include <stdio.h>
-	
+
+void print_refs(Associative_Array ada) {
+	for (size_t i=0; i<ada.refs.current_length; i++) {
+		for (size_t j=0; j<8; j++) {
+			printf("%d", ((0b10000000 >> j) & INDAP(byte, ada.refs.p)[i]) > 0);
+		}
+		printf(" ");
+	}
+}
 
 size_t ada_push(Associative_Array* ada, void* val) {
-	// this is the index that we're pushing into, we'll return it
-	size_t push_idx = 0;
-
+	printf("before\n");
+	print_refs(*ada);
+	printf("\n");
 	if (ada->empties == 0) {
 		size_t new_val_idx = ada->vals.current_length;
 		da_push(&ada->vals, val);
@@ -143,9 +151,8 @@ size_t ada_push(Associative_Array* ada, void* val) {
 		size_t val_bit = new_val_idx % 8;
 		byte* ref_bytes = (byte*) ada->refs.p;
 		ref_bytes[val_byte] ^= (0b10000000 >> val_bit);
-
-		push_idx = new_val_idx;
-		
+		printf("after\n"); print_refs(*ada); printf("\n");
+		return new_val_idx;
 	} else {
 		// find leftmost one bit
 		byte* ref_bytes = (byte*) ada->refs.p;
@@ -153,26 +160,24 @@ size_t ada_push(Associative_Array* ada, void* val) {
 			if (ref_bytes[cur_byte] != 0) { // there's a one in here somewhere
 				for (size_t cur_bit=0; cur_bit<8; cur_bit++) {
 					if ((ref_bytes[cur_byte] & (0b10000000 >> cur_bit)) > 0) { // found it!
-						printf("index %d\n", cur_bit);
-						//ada->vals.p[(cur_byte * 8) + cur_bit];
 						byte* da_bytes = (byte*) (ada->vals.p);
 						byte* val_bytes = (byte*) val;
 						size_t new_val_idx = ((cur_byte * 8) + cur_bit) * ada->vals.unit_size;
-						push_idx = new_val_idx;
 						for (size_t i=0; i<ada->vals.unit_size; i++) {
 							da_bytes[new_val_idx + i] = val_bytes[i];
 						}
 						
 						ref_bytes[cur_byte] ^= (0b10000000 >> cur_bit); // get rid of that 1
+						printf("after\n"); print_refs(*ada); printf("\n");
+						ada->vals.current_length++;
+						ada->empties--;
+						return new_val_idx / ada->vals.unit_size;
 					}
 				}
 			}
 		}
-		ada->vals.current_length++;
-		ada->empties--;
 	}
-
-	return push_idx;
+	return 0;
 }
 
 void ada_insert(Associative_Array* ada, void* val, size_t idx) {
@@ -197,7 +202,6 @@ int ada_is_hole(Associative_Array ada, size_t idx) {
 	return 0;
 }
 
-#include <stdio.h>
 
 void ada_remove(Associative_Array* ada, size_t idx) {
 	// this will be different from da_remove
