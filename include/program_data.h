@@ -51,4 +51,8 @@ void POINT_SELECT_FUNCTION(program_data*);
 
 int MOUSE_POINT_COLLISION(Ray, Associative_Array);
 
-void ADD_POINT(Associative_Array*, Vector3);
+size_t ADD_POINT(Associative_Array*, Vector3);
+
+// DEBUG
+
+int debug_per_s(int); // this is roughly used to print something every once in a while

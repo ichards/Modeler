@@ -33,11 +33,13 @@ void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
 void draw_single_points(void* val, size_t idx) {
 	DAP(valp, Vector3, val);
 	DrawSphere(valp[idx], 0.3, BLACK);
+	if (debug_per_s(0)) {
+		printf("[%d] - %.1f, %.1f, %.1f\n", idx, valp[idx].x, valp[idx].y, valp[idx].z);
+	}
 }
 
 void DRAW_POINTS(Associative_Array points, Dynamic_Array sel_points) {
 	ada_iter(points, draw_single_points);
-
 }
 
 void DRAW_FACES(Associative_Array points, Dynamic_Array faces) {
@@ -54,9 +56,9 @@ void DRAW_FACES(Associative_Array points, Dynamic_Array faces) {
 	}
 }
 
-void ADD_POINT(Associative_Array* points, Vector3 point) {
+size_t ADD_POINT(Associative_Array* points, Vector3 point) {
 
-	ada_push(points, &point);
+	return ada_push(points, &point);
 	
 }
 
@@ -92,3 +94,16 @@ void ADD_FACE(int** faces, int* selected_points,) {
 	
 }
 */
+
+static int timer = 0;
+int debug_per_s(int addend) {
+	timer += addend;
+	int ret = 0;
+	if (timer >= 120) {
+		ret = 1;
+	}
+	if (timer >= 122) {
+		timer = 0;
+	}
+	return ret;
+}

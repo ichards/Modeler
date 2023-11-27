@@ -1,6 +1,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "../include/draw_util.h"
 #include "../include/program_data.h"
 
@@ -14,7 +15,6 @@
 // it stores minimal data that's interpreted depending on the state
 //typedef void (*STATE_FUNCTION) (Camera*, Camera*, RenderTexture2D*, const int*, const int*, STATE*);
 typedef void (*STATE_FUNCTION) (program_data*);
-
 
 
 int main(void)
@@ -79,6 +79,7 @@ int main(void)
 
         mode_functions[mode](&p_program_data);
 
+        debug_per_s(1);
     }
 
     CloseWindow();

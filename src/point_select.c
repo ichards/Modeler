@@ -2,6 +2,7 @@
 #include "../include/draw_util.h"
 #include "../include/raylib.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include "../include/raymath.h"
 
 void POINT_SELECT_FUNCTION(program_data* data) {
@@ -73,8 +74,9 @@ void POINT_SELECT_FUNCTION(program_data* data) {
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 		if (axis_collision.hit) {
-			ADD_POINT(data->points, draw_point);
+			size_t idx = ADD_POINT(data->points, draw_point);
 			*data->program_state = VIEW;
+			printf("pushing point [%d] - (%.1f, %.1f, %.1f)\n", idx, draw_point.x, draw_point.y, draw_point.z);
 		}
 		
     }

@@ -38,7 +38,7 @@ Associative_Array create_ada(Dynamic_Array);
 
 void ada_free(Associative_Array*);
 
-void ada_push(Associative_Array*, void*);
+size_t ada_push(Associative_Array*, void*);
 
 void ada_insert(Associative_Array*, void*, size_t);
 

@@ -125,7 +125,10 @@ void ada_free(Associative_Array* ada) {
 }
 	
 
-void ada_push(Associative_Array* ada, void* val) {
+size_t ada_push(Associative_Array* ada, void* val) {
+	// this is the index that we're pushing into, we'll return it
+	size_t push_idx = 0;
+
 	if (ada->empties == 0) {
 		size_t new_val_idx = ada->vals.current_length;
 		da_push(&ada->vals, val);
@@ -138,6 +141,8 @@ void ada_push(Associative_Array* ada, void* val) {
 		size_t val_bit = new_val_idx % 8;
 		byte* ref_bytes = (byte*) ada->refs.p;
 		ref_bytes[val_byte] ^= (0b10000000 >> val_bit);
+
+		push_idx = new_val_idx;
 		
 	} else {
 		// find leftmost one bit
@@ -151,6 +156,7 @@ void ada_push(Associative_Array* ada, void* val) {
 						byte* da_bytes = (byte*) (ada->vals.p);
 						byte* val_bytes = (byte*) val;
 						size_t new_val_idx = ((cur_byte * 8) + cur_bit) * ada->vals.unit_size;
+						push_idx = new_val_idx;
 						for (size_t i=0; i<ada->vals.unit_size; i++) {
 							da_bytes[new_val_idx + i] = val_bytes[i];
 						}
@@ -163,6 +169,8 @@ void ada_push(Associative_Array* ada, void* val) {
 		ada->vals.current_length++;
 		ada->empties--;
 	}
+
+	return push_idx;
 }
 
 void ada_insert(Associative_Array* ada, void* val, size_t idx) {
