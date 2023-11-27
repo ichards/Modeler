@@ -1,7 +1,7 @@
 #include "../include/program_data.h"
 #include "../include/draw_util.h"
 #include "../include/raylib.h"
-
+#include "../dynamic_arrays/dynamic_array.h"
 #include "../include/raymath.h"
 
 #include <stdio.h>
@@ -94,7 +94,7 @@ void VIEW_FUNCTION(program_data* data) {
 
     }
 
-	
+
     if (IsKeyPressed(KEY_F)) {
         //data->face_idxs[0] = data->selected_points_idxs[0];
         //data->face_idxs[1] = data->selected_points_idxs[1];
@@ -104,7 +104,8 @@ void VIEW_FUNCTION(program_data* data) {
         if (data->sel_points->current_length == 3) {
             size_t* pointp = (size_t*) data->sel_points->p;
             face new_face = {pointp[0], pointp[1], pointp[2]};
-            da_push(data->face_points, &new_face);
+            DA_PUSH(data->face_points, face, new_face);
+            DAP(facep, face, data->face_points->p);
         }
     }
 

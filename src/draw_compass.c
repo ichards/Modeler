@@ -40,6 +40,10 @@ void draw_single_points(void* val, size_t idx) {
 
 void DRAW_POINTS(Associative_Array points, Dynamic_Array sel_points) {
 	ada_iter(points, draw_single_points);
+	for (size_t i=0; i<sel_points.current_length; i++) {
+		DAP(cur_idx, size_t, sel_points.p);
+		DrawSphere(INDAP(Vector3, points.vals.p)[cur_idx[i]], 0.4, RED);
+	}
 }
 
 void DRAW_FACES(Associative_Array points, Dynamic_Array faces) {

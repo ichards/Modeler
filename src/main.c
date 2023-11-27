@@ -56,9 +56,9 @@ int main(void)
 	//Dynamic_Array sel_points = create_da(malloc(sizeof(size_t) * 8), &sel_point_default, sizeof(size_t), 0, 8);
     CREATE_DA(sel_points, 8, sel_point_default, size_t);
 
-	size_t face_point_default = 0;
+	face face_point_default = {0};
 	//Dynamic_Array face_points = create_da(malloc(sizeof(face) * 8), &face_point_default, sizeof(face), 0, 8);
-	CREATE_DA(face_points, 8, face_point_default, size_t);
+	CREATE_DA(face_points, 8, face_point_default, face);
 
     Vector3 save_vector = V3(0, 0, 0);
 
