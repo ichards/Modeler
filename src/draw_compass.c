@@ -30,24 +30,14 @@ void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
     EndTextureMode();
 }
 
+void draw_single_points(void* val, size_t idx) {
+	DAP(valp, Vector3, val);
+	DrawSphere(valp[idx], 0.3, BLACK);
+}
+
 void DRAW_POINTS(Associative_Array points, Dynamic_Array sel_points) {
-	Vector3* points_p = points.vals.p;
-	size_t idx = 0;
-	for (size_t i = 0; i < points.vals.current_length; i++) {
-		if (ada_is_hole(points, idx)) {
-			printf("[%d]-skip\n", idx);
-			idx++;
-			i--;
-			continue;
-		}
-		// draw it
-		DrawSphere(points_p[idx], 0.3, BLACK);
-		idx++;
-	}
-	size_t* current_idx = (size_t*) sel_points.p;
-	for (size_t i=0; i < sel_points.current_length; i++) {
-		DrawSphere(points_p[current_idx[i]], 0.5, BLUE);
-	}
+	ada_iter(points, draw_single_points);
+
 }
 
 void DRAW_FACES(Associative_Array points, Dynamic_Array faces) {

@@ -49,14 +49,17 @@ int main(void)
 	
 	// the new stuff
 	Vector3 point_default = V3(0, 0, 0);
-	Associative_Array all_points = create_ada(create_da(malloc(sizeof(Vector3) * 8), &point_default, sizeof(Vector3), 0, 8));
+	//Associative_Array all_points = create_ada(create_da(malloc(sizeof(Vector3) * 8), &point_default, sizeof(Vector3), 0, 8));
+    CREATE_ADA(all_points, 8, point_default, Vector3);
 
 	size_t sel_point_default = 0;
-	Dynamic_Array sel_points = create_da(malloc(sizeof(size_t) * 8), &sel_point_default, sizeof(size_t), 0, 8);
-	
+	//Dynamic_Array sel_points = create_da(malloc(sizeof(size_t) * 8), &sel_point_default, sizeof(size_t), 0, 8);
+    CREATE_DA(sel_points, 8, sel_point_default, size_t);
+
 	size_t face_point_default = 0;
-	Dynamic_Array face_points = create_da(malloc(sizeof(face) * 8), &face_point_default, sizeof(face), 0, 8);
-	
+	//Dynamic_Array face_points = create_da(malloc(sizeof(face) * 8), &face_point_default, sizeof(face), 0, 8);
+	CREATE_DA(face_points, 8, face_point_default, size_t);
+
     Vector3 save_vector = V3(0, 0, 0);
 
     Vector3 grid_point = V3(0, 0, 0);
