@@ -9,56 +9,6 @@
 //void VIEW_FUNCTION(Camera* camera, Camera *mini_camera, RenderTexture2D* corner_render, const int* screenWidth, const int* screenHeight, STATE* mode) {
 void VIEW_FUNCTION(program_data* data) {
 
-    // MOUSE COLLISION
-    Color x_color = BLACK, y_color = BLACK, z_color = BLACK;
-    Ray mouse_ray = GetMouseRay(GetMousePosition(), *data->main_camera);
-    float distance;
-
-    RayCollision x_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-10, -0.5, -0.5), V3(10, 0.5, 0.5)});
-    RayCollision y_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-0.5, -10, -0.5), V3(0.5, 10, 0.5)});
-    RayCollision z_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-0.5, -0.5, -10), V3(0.5, 0.5, 10)});
-
-    *data->save_vector = V3(1, 1, 1); // THE VARIABLE THAT WILL BE SENT TO THE NEXT STATE
-
-    if (x_collision.hit) {
-        x_color = WHITE;
-        data->save_vector->x = 20;
-    }
-
-    if (y_collision.hit) {
-        x_color = BLACK;
-        y_color = WHITE;
-        data->save_vector->x = 1;
-        data->save_vector->y = 20;
-        if (x_collision.hit && x_collision.distance < y_collision.distance) {
-            x_color = WHITE;
-            y_color = BLACK;
-            data->save_vector->x = 20;
-            data->save_vector->y = 1;
-        }
-    }
-
-    if (z_collision.hit) {
-        x_color = BLACK;
-        y_color = BLACK;
-        z_color = WHITE;
-        data->save_vector->z = 20;
-
-        if (x_collision.hit && x_collision.distance < z_collision.distance) {
-            x_color = WHITE;
-            z_color = BLACK;
-            data->save_vector->x = 20;
-            data->save_vector->z = 1;
-        }
-        if (y_collision.hit && y_collision.distance < z_collision.distance) {
-            y_color = WHITE;
-            z_color = BLACK;
-            data->save_vector->y = 20;
-            data->save_vector->z = 1;
-        }
-    }
-
-
     // HANDLE INPUT
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
         DisableCursor();
@@ -71,12 +21,12 @@ void VIEW_FUNCTION(program_data* data) {
     if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
         EnableCursor();
     }
-	
 
+    if (IsKeyPressed(KEY_A)) {
+        *data->program_state = AXIS_SELECT;
+    }
+	
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        if (x_collision.hit || y_collision.hit || z_collision.hit) {
-            *data->program_state = GRID_SELECT;
-        }
 		
 		int click_point = MOUSE_POINT_COLLISION(GetMouseRay(GetMousePosition(), *data->main_camera), *(data->points));
 
@@ -91,15 +41,9 @@ void VIEW_FUNCTION(program_data* data) {
             da_push(data->sel_points, (void*)&click_point_s);
             printf("sel_points now %d large\n", data->sel_points->current_length);
         }
-
     }
 
-
     if (IsKeyPressed(KEY_F)) {
-        //data->face_idxs[0] = data->selected_points_idxs[0];
-        //data->face_idxs[1] = data->selected_points_idxs[1];
-        //data->face_idxs[2] = data->selected_points_idxs[2];
-        
         // validate to make sure 3 points are selected
         if (data->sel_points->current_length == 3) {
             size_t* pointp = (size_t*) data->sel_points->p;
@@ -111,7 +55,7 @@ void VIEW_FUNCTION(program_data* data) {
 
     if (IsKeyPressed(KEY_D)) {
         // delete a point
-        // this will decimate the program if the points are used for a face
+        // this will decimate the program if the points are used for a face, gotta be careful
         for (size_t i=0; i<data->sel_points->current_length; i++) {
             size_t* spointsp = (size_t*) data->sel_points->p;
             ada_remove(data->points, spointsp[i]);
@@ -120,11 +64,11 @@ void VIEW_FUNCTION(program_data* data) {
 
     }
 
-
-	DRAW_COMPASS(data->reference_render, data->mini_camera);
-
+    // END INPUT
 
     // DRAW MAIN SCREEN
+	DRAW_COMPASS(data->reference_render, data->mini_camera);
+
     BeginDrawing();
 
     	//ClearBackground(STATE_COLORS[*(data->program_state)]);
@@ -135,7 +79,7 @@ void VIEW_FUNCTION(program_data* data) {
         BeginMode3D(*data->main_camera);
 
             // DRAW MAIN GRID
-            draw_axis(V3(0, 0, 0), 10, x_color, y_color, z_color);
+            draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 			
 			DRAW_POINTS(*(data->points), *(data->sel_points));
 

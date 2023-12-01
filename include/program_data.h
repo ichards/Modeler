@@ -8,6 +8,7 @@
 // INITIALIZE STATES
 typedef enum {
     VIEW = 0,
+    AXIS_SELECT,
     GRID_SELECT,
     POINT_SELECT,
 	COUNT
@@ -44,6 +45,8 @@ void DRAW_POINTS(Associative_Array, Dynamic_Array);
 void DRAW_FACES(Associative_Array, Dynamic_Array);
 
 void VIEW_FUNCTION(program_data*);
+
+void AXIS_SELECT_FUNCTION(program_data*);
 
 void GRID_SELECT_FUNCTION(program_data*);
 
