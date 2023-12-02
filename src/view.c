@@ -61,7 +61,10 @@ void VIEW_FUNCTION(program_data* data) {
             ada_remove(data->points, spointsp[i]);
         }
         da_clear(data->sel_points);
+    }
 
+    if (IsKeyPressed(KEY_T) && data->sel_points->current_length == 1) {
+        *(data->program_state) = POINT_TRANSLATE;
     }
 
     // END INPUT

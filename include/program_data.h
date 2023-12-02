@@ -11,6 +11,7 @@ typedef enum {
     AXIS_SELECT,
     GRID_SELECT,
     POINT_SELECT,
+    POINT_TRANSLATE,
 	COUNT
 } STATE;
 
@@ -51,6 +52,8 @@ void AXIS_SELECT_FUNCTION(program_data*);
 void GRID_SELECT_FUNCTION(program_data*);
 
 void POINT_SELECT_FUNCTION(program_data*);
+
+void POINT_TRANSLATE_FUNCTION(program_data*);
 
 int MOUSE_POINT_COLLISION(Ray, Associative_Array);
 
