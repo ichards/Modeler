@@ -15,7 +15,14 @@ typedef enum {
 	COUNT
 } STATE;
 
-
+typedef union interstate_data {
+    Vector3 ivector;
+    struct point_and_orientation {
+        Vector3 point;
+        Vector3 up;
+    };
+    size_t trans_point;
+} idata;
 
 // DECLARING PROGRAM DATA
 typedef struct {
@@ -26,7 +33,7 @@ typedef struct {
     Associative_Array* points;
 	Dynamic_Array* sel_points;
 	Dynamic_Array* face_points; // this part is controversial
-    Vector3* save_vector;
+    Vector3* save_vector; // idata is gonna replace these 3 Vector3s
     Vector3* grid_point;
     Vector3* grid_up;
 	Color* colors;

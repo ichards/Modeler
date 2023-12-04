@@ -40,8 +40,8 @@ void GRID_SELECT_FUNCTION(program_data* data) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         //data->all_points[0] = input_point;
         *data->program_state = POINT_SELECT;
-	*data->grid_point = input_point;
-	*data->grid_up = up;
+        *data->grid_point = input_point;
+        *data->grid_up = up;
     }
 
 	
