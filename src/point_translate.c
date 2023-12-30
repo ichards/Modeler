@@ -18,7 +18,6 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
 
     BeginDrawing();
 
-    	//ClearBackground(STATE_COLORS[*(data->program_state)]);
 		ClearBackground(data->colors[*(data->program_state)]);
 
 		DrawRectangle(10, 10, GetScreenWidth() - 20, GetScreenWidth() - 20, GRAY);
@@ -29,6 +28,10 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
             draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 			
 			DRAW_POINTS(*(data->points), *(data->sel_points));
+
+            DAP(cur_idx, size_t, data->sel_points->p);
+            DrawSphere(INDAP(Vector3, data->points->vals.p)[cur_idx[0]], 0.6, YELLOW);
+
 
             DRAW_FACES(*(data->points), *(data->face_points));
 

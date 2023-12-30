@@ -30,9 +30,9 @@ typedef struct {
     Camera* mini_camera;
     RenderTexture2D* reference_render;
     STATE* program_state;
-    Associative_Array* points;
-	Dynamic_Array* sel_points;
-	Dynamic_Array* face_points; // this part is controversial
+    Associative_Array* points;  // Vector3
+	Dynamic_Array* sel_points;  // size_t
+	Dynamic_Array* face_points; // this part is controversial (face)
     Vector3* save_vector; // idata is gonna replace these 3 Vector3s
     Vector3* grid_point;
     Vector3* grid_up;
