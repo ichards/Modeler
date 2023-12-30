@@ -67,8 +67,10 @@ int main(void)
 	
 	Color STATE_COLORS[] = {
 		BLACK,	// VIEW
-		RED,	// GRID_SELECT
-		PURPLE	// POINT_SELECT
+		RED,	// AXIS_SELECT
+		PURPLE,	// GRID_SELECT
+        YELLOW, // POINT_SELECT
+        GREEN   // POINT_TRANSLATE
 	};
 
     program_data p_program_data = (program_data) {&camera, &mini_camera, &corner_render, &mode, &all_points, &sel_points, &face_points, &save_vector, &grid_point, &grid_up, STATE_COLORS};
