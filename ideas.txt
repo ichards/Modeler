@@ -11,3 +11,8 @@ remove screenwidth and height from program_data and just give window
 i had a problem where i couldn't free an array since it was on the stack and not on the heap. im so goofy *sighs*
 
 change every array to malloc for safety. implement faces. implement making faces and whatnot.
+
+OH MY GOD I NEED TO MAKE THE DYNAMIC ARRAYS BETTER. (i'm back from my break)
+i need actual methods like .get(index) or .at(index). here's the plan.
+da.get(index, &val) -> puts value of da[index] into val.
+MACRO: DA_DUPLICATE(da, index, val) => da_type val; da.get(index, &val);

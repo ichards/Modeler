@@ -13,6 +13,8 @@
 
 void POINT_TRANSLATE_FUNCTION(program_data* data) {
 
+    // let's make the collision boxes for the axis
+
 
 	DRAW_COMPASS(data->reference_render, data->mini_camera);
 
@@ -25,13 +27,13 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
         BeginMode3D(*data->main_camera);
 
             // DRAW MAIN GRID
-            draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
+            //draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
 			
 			DRAW_POINTS(*(data->points), *(data->sel_points));
 
             DAP(cur_idx, size_t, data->sel_points->p);
             DrawSphere(INDAP(Vector3, data->points->vals.p)[cur_idx[0]], 0.6, YELLOW);
-
+            draw_axis(INDAP(Vector3, data->points->vals.p)[cur_idx[0]], 10, RED, GREEN, BLUE);
 
             DRAW_FACES(*(data->points), *(data->face_points));
 

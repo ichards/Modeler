@@ -106,6 +106,27 @@ void da_clear(Dynamic_Array* da) {
 	da->current_length = 0;
 }
 
+void da_read(Dynamic_Array* da, size_t index, void* buffer) {
+	byte* dap = da->p;
+	dap += (index * da->unit_size);
+
+	byte* bufferp = buffer;
+	for (size_t i=0; i<da->unit_size; i++) {
+		bufferp[i] = dap[i];
+	}
+}
+
+void da_write(Dynamic_Array* da, size_t index, void* buffer) {
+	byte* dap = da->p;
+	dap += (index * da->unit_size);
+
+	byte* bufferp = buffer;
+	for (size_t i=0; i<da->unit_size; i++) {
+		dap[i] = bufferp[i];
+	}
+}
+
+
 Associative_Array create_ada(Dynamic_Array da) {
 	static byte ref_def = 0b11111111;
 	Associative_Array ada = (Associative_Array) {
@@ -123,22 +144,9 @@ void ada_free(Associative_Array* ada) {
 	da_free(ada->vals);
 	da_free(ada->refs);
 }
-
-#include <stdio.h>
-
-void print_refs(Associative_Array ada) {
-	for (size_t i=0; i<ada.refs.current_length; i++) {
-		for (size_t j=0; j<8; j++) {
-			printf("%d", ((0b10000000 >> j) & INDAP(byte, ada.refs.p)[i]) > 0);
-		}
-		printf(" ");
-	}
-}
+	
 
 size_t ada_push(Associative_Array* ada, void* val) {
-	printf("before\n");
-	print_refs(*ada);
-	printf("\n");
 	if (ada->empties == 0) {
 		size_t new_val_idx = ada->vals.current_length;
 		da_push(&ada->vals, val);
@@ -151,7 +159,7 @@ size_t ada_push(Associative_Array* ada, void* val) {
 		size_t val_bit = new_val_idx % 8;
 		byte* ref_bytes = (byte*) ada->refs.p;
 		ref_bytes[val_byte] ^= (0b10000000 >> val_bit);
-		printf("after\n"); print_refs(*ada); printf("\n");
+		
 		return new_val_idx;
 	} else {
 		// find leftmost one bit
@@ -168,14 +176,13 @@ size_t ada_push(Associative_Array* ada, void* val) {
 						}
 						
 						ref_bytes[cur_byte] ^= (0b10000000 >> cur_bit); // get rid of that 1
-						printf("after\n"); print_refs(*ada); printf("\n");
-						ada->vals.current_length++;
-						ada->empties--;
 						return new_val_idx / ada->vals.unit_size;
 					}
 				}
 			}
 		}
+		ada->vals.current_length++;
+		ada->empties--;
 	}
 	return 0;
 }
@@ -202,6 +209,7 @@ int ada_is_hole(Associative_Array ada, size_t idx) {
 	return 0;
 }
 
+#include <stdio.h>
 
 void ada_remove(Associative_Array* ada, size_t idx) {
 	// this will be different from da_remove

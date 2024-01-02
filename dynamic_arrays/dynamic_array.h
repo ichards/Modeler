@@ -26,6 +26,10 @@ void da_remove(Dynamic_Array*, size_t);
 
 void da_clear(Dynamic_Array*);
 
+void da_read(Dynamic_Array*, size_t, void*);
+
+void da_write(Dynamic_Array*, size_t, void*);
+
 // array with ability to keep references to values without being changed from element deletion
 // when you remove element that's referred to, save it as being deleted to fill later
 typedef struct ada {
@@ -55,8 +59,11 @@ void ada_iter(Associative_Array, void (*fun)(void*, size_t));
 #define DA_PUSH(da, type, val) {type AAA = val; da_push(da, &AAA);}
 #define _CREATE_DA(da, max_length, def_val, unit_type) {void* AAAAA = malloc(sizeof(unit_type));((unit_type*)AAAAA)[0] = def_val;da = create_da(max_length, AAAAA, sizeof(unit_type));}
 #define CREATE_DA(da, max_length, def_val, unit_type) Dynamic_Array da; _CREATE_DA(da, max_length, def_val, unit_type);
+#define DA_DUPLICATE_VAL(da, index, type, new_val) type new_val; da_read(&da, index, &new_val);
+#define DA_WRITE_VAL(da, index, type, new_val) type temp = new_val; da_write(&da, index, &temp);
 
 #define ADA_PUSH(ada, type, val) {type AAA = val; ada_push(ada, &AAA);}
+#define ADA_PUSH_SAVE(ada, type, val, var) type AAA = val; type var = ada_push(ada, &AAA);
 #define _CREATE_ADA(ada, max_length, def_val, unit_type) {void* AAAAA = malloc(sizeof(unit_type));((unit_type*)AAAAA)[0] = def_val;ada = create_ada(create_da(max_length, AAAAA, sizeof(unit_type)));}
 #define CREATE_ADA(ada, max_length, def_val, unit_type) Associative_Array ada; _CREATE_ADA(ada, max_length, def_val, unit_type);
 
