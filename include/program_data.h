@@ -36,6 +36,7 @@ typedef struct {
     Vector3* save_vector; // idata is gonna replace these 3 Vector3s
     Vector3* grid_point;
     Vector3* grid_up;
+    idata* general_data;
 	Color* colors;
 } program_data;
 

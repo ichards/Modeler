@@ -64,6 +64,8 @@ int main(void)
 
     Vector3 grid_point = V3(0, 0, 0);
     Vector3 grid_up = V3(0, 0, 0);
+
+    idata gen_data = {0};
 	
 	Color STATE_COLORS[] = {
 		BLACK,	// VIEW
@@ -73,7 +75,7 @@ int main(void)
         GREEN   // POINT_TRANSLATE
 	};
 
-    program_data p_program_data = (program_data) {&camera, &mini_camera, &corner_render, &mode, &all_points, &sel_points, &face_points, &save_vector, &grid_point, &grid_up, STATE_COLORS};
+    program_data p_program_data = (program_data) {&camera, &mini_camera, &corner_render, &mode, &all_points, &sel_points, &face_points, &save_vector, &grid_point, &grid_up, &gen_data, STATE_COLORS};
 
     // MAIN LOOP
     while (!WindowShouldClose())
