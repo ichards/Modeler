@@ -64,11 +64,12 @@ void VIEW_FUNCTION(program_data* data) {
     }
 
     if (IsKeyPressed(KEY_T) && data->sel_points->current_length == 1) {
-        *(data->program_state) = POINT_TRANSLATE;
+        //*(data->program_state) = POINT_TRANSLATE;
+        *(data->program_state) = TRANSLATE_TRANSITION;
         // get value into idata for next state
         DA_DUPLICATE_VAL(*data->sel_points, 0, size_t, trans_point)
         data->general_data->trans_point = trans_point;
-        data->main_camera->target = ((Vector3*)(data->points->vals.p))[trans_point];
+        //data->main_camera->target = ((Vector3*)(data->points->vals.p))[trans_point];
     }
 
     // END INPUT
