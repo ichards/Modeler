@@ -38,25 +38,23 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
 
     // selected axis
     float dist = 0;
-    int select = 0; // false
-    int index = -1;
+    int select = -1;
     for (int i=0; i<3; i++) {
         if (collision[i].hit) {
-            if (select != 1) {
-                select = 1;
+            if (select == -1) {
                 dist = collision[i].distance;
-                index = i;
+                select = i;
             } else {
                 if (collision[i].distance < dist) {
                     dist = collision[i].distance;
-                    index = i;
+                    select = i;
                 }
             }
         }
     }
 
-    if (index != -1) {
-        axis_colors[index] = WHITE;
+    if (select != -1) {
+        axis_colors[select] = WHITE;
     }
     
 
