@@ -16,9 +16,20 @@ void TRANSLATE_TRANSITION_FUNCTION(program_data* data) {
     Vector3 z1 = Vector3Add(state_point, V3(-0.5, -0.5, -10));
     Vector3 z2 = Vector3Add(state_point, V3(0.5, 0.5, 10));
 
-    static float timer = 1.0;
+    const float trans_time = 0.3;
 
-    data->main_camera->target = Vector3Scale(state_point, 1.0 - timer);
+    // now that i think about it, idk how this works
+    static float timer = trans_time;
+
+    // temporary, this should be in program_data
+    static Vector3 init_camera_pos = {0};
+    if (timer == trans_time) {
+        init_camera_pos = data->main_camera->position;
+    }
+
+    data->main_camera->target = Vector3Scale(state_point, (trans_time - timer) / 1.0 / trans_time);
+
+    data->main_camera->position = Vector3Add(init_camera_pos, Vector3Scale(state_point, (trans_time - timer) / 1.0 / trans_time));
     // TO-DO - change position aswell
     //data->main_camera->position = Vector3Scale()
 
