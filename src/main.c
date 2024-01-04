@@ -73,7 +73,7 @@ int main(void)
 		PURPLE,	// GRID_SELECT
         YELLOW, // POINT_SELECT
         GREEN, 
-        GREEN   // POINT_TRANSLATE
+        BLUE   // POINT_TRANSLATE
 	};
 
     program_data p_program_data = (program_data) {&camera, &mini_camera, &corner_render, &mode, &all_points, &sel_points, &face_points, &save_vector, &grid_point, &grid_up, &gen_data, STATE_COLORS};

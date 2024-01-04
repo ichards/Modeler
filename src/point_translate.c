@@ -27,11 +27,38 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
     Vector3 z2 = Vector3Add(state_point, V3(0.5, 0.5, 10));
 
     // let's make the collision boxes for the axis
-    /*
-    RayCollision x_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-10, -0.5, -0.5), V3(10, 0.5, 0.5)});
-    RayCollision y_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-0.5, -10, -0.5), V3(0.5, 10, 0.5)});
-    RayCollision z_collision = GetRayCollisionBox(mouse_ray, (BoundingBox) {V3(-0.5, -0.5, -10), V3(0.5, 0.5, 10)});
-    */
+    RayCollision collision[] = {
+        GetRayCollisionBox(mouse_ray, (BoundingBox) {x1, x2}),
+        GetRayCollisionBox(mouse_ray, (BoundingBox) {y1, y2}),
+        GetRayCollisionBox(mouse_ray, (BoundingBox) {z1, z2})
+    };
+    Color axis_colors[] = {
+        BLACK, BLACK, BLACK
+    };
+
+    // selected axis
+    float dist = 0;
+    int select = 0; // false
+    int index = -1;
+    for (int i=0; i<3; i++) {
+        if (collision[i].hit) {
+            if (select != 1) {
+                select = 1;
+                dist = collision[i].distance;
+                index = i;
+            } else {
+                if (collision[i].distance < dist) {
+                    dist = collision[i].distance;
+                    index = i;
+                }
+            }
+        }
+    }
+
+    if (index != -1) {
+        axis_colors[index] = WHITE;
+    }
+    
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
         DisableCursor();
@@ -56,22 +83,29 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
         BeginMode3D(*data->main_camera);
 
             // DRAW MAIN GRID
-            //draw_axis(V3(0, 0, 0), 10, BLACK, BLACK, BLACK);
-
             DrawSphere(x1, 0.3, RED);
             DrawSphere(x2, 0.3, RED);
             DrawSphere(y1, 0.3, GREEN);
             DrawSphere(y2, 0.3, GREEN);
             DrawSphere(z1, 0.3, BLUE);
             DrawSphere(z2, 0.3, BLUE);
-
-			
+/*
+            if (x_collision.hit) {
+                DrawSphere(x_collision.point, 0.5, RED);
+            }
+            if (y_collision.hit) {
+                DrawSphere(y_collision.point, 0.5, GREEN);
+            }
+            if (z_collision.hit) {
+                DrawSphere(z_collision.point, 0.5, BLUE);
+            }
+*/
 			DRAW_POINTS(*(data->points), *(data->sel_points));
 
             DAP(cur_idx, size_t, data->sel_points->p);
             DrawSphere(INDAP(Vector3, data->points->vals.p)[cur_idx[0]], 0.6, YELLOW);
             //draw_axis(INDAP(Vector3, data->points->vals.p)[cur_idx[0]], 10, RED, GREEN, BLUE);
-            draw_axis(state_point, 10, RED, GREEN, BLUE);
+            draw_axis(state_point, 10, axis_colors[0], axis_colors[1], axis_colors[2]);
 
 
             DRAW_FACES(*(data->points), *(data->face_points));
