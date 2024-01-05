@@ -32,6 +32,7 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
         GetRayCollisionBox(mouse_ray, (BoundingBox) {y1, y2}),
         GetRayCollisionBox(mouse_ray, (BoundingBox) {z1, z2})
     };
+
     Color axis_colors[] = {
         BLACK, BLACK, BLACK
     };
@@ -56,16 +57,27 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
     if (select != -1) {
         axis_colors[select] = WHITE;
     }
-    
 
+    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+        if (select != -1) {
+            // axis is selected and user is clicking
+
+            // temporary... ;)
+            ((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += GetMouseDelta().x;
+            //GetMouseDelta();
+        }
+    }
+    
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
         DisableCursor();
     }
+    
     if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
         UpdateCamera(data->main_camera, CAMERA_THIRD_PERSON);
         data->mini_camera->position = Vector3Negate(Vector3Normalize(data->main_camera->position));
         data->mini_camera->up = data->main_camera->up;
     }
+
     if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
         EnableCursor();
     }
