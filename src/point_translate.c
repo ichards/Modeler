@@ -37,6 +37,19 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
         BLACK, BLACK, BLACK
     };
 
+    // these are for getting slope when translating
+    Vector3 p1s[] = {
+        V3(1, 0, 0),
+        V3(0, 1, 0),
+        V3(0, 0, 1)
+    };
+
+    Vector3 p2s[] = {
+        V3(-1, 0, 0),
+        V3(0, -1, 0),
+        V3(0, 0, -1)
+    };
+
     // selected axis
     float dist = 0;
     int select = -1;
@@ -61,26 +74,40 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
         if (select != -1) {
             // axis is selected and user is clicking
+            Vector2 line2d = Vector2Subtract(GetWorldToScreen(p1s[select]), GetWorldToScreen(p2s[select]));
+            float slope = line2d.y / line2d.x;
+
+            float mouseslope = GetMouseDelta().y / GetMouseDelta().x;
+            float mouselength = Vector2Length(GetMouseDelta());
+
+            // TODO: convert slope to degrees/radians, and then get scalar value between 0 and 1 comparing line slope and mouse slope
+
+            ((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += mouselength * ()
 
             // temporary... ;)
-            ((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += GetMouseDelta().x;
+            //((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += GetMouseDelta().x;
             //GetMouseDelta();
         }
-    }
-    
-    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-        DisableCursor();
-    }
-    
-    if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
-        UpdateCamera(data->main_camera, CAMERA_THIRD_PERSON);
-        data->mini_camera->position = Vector3Negate(Vector3Normalize(data->main_camera->position));
-        data->mini_camera->up = data->main_camera->up;
+    } else {
+        // rotating camera while translating point will cause chaos
+        // keep in mind the user left clicking does not necessarily mean they're translating it, but whatever
+        if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
+            DisableCursor();
+        }
+
+        if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
+            UpdateCamera(data->main_camera, CAMERA_THIRD_PERSON);
+            data->mini_camera->position = Vector3Negate(Vector3Normalize(data->main_camera->position));
+            data->mini_camera->up = data->main_camera->up;
+        }
+
+        if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
+            EnableCursor();
+        }
     }
 
-    if (IsMouseButtonReleased(MOUSE_RIGHT_BUTTON)) {
-        EnableCursor();
-    }
+    
+
 
 	DRAW_COMPASS(data->reference_render, data->mini_camera);
 
@@ -99,17 +126,7 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
             DrawSphere(y2, 0.3, GREEN);
             DrawSphere(z1, 0.3, BLUE);
             DrawSphere(z2, 0.3, BLUE);
-/*
-            if (x_collision.hit) {
-                DrawSphere(x_collision.point, 0.5, RED);
-            }
-            if (y_collision.hit) {
-                DrawSphere(y_collision.point, 0.5, GREEN);
-            }
-            if (z_collision.hit) {
-                DrawSphere(z_collision.point, 0.5, BLUE);
-            }
-*/
+
 			DRAW_POINTS(*(data->points), *(data->sel_points));
 
             DAP(cur_idx, size_t, data->sel_points->p);

@@ -33,9 +33,6 @@ void DRAW_COMPASS(RenderTexture2D* render, Camera* camera) {
 void draw_single_points(void* val, size_t idx) {
 	DAP(valp, Vector3, val);
 	DrawSphere(valp[idx], 0.3, BLACK);
-	if (debug_per_s(0)) {
-		printf("[%d] - %.1f, %.1f, %.1f\n", idx, valp[idx].x, valp[idx].y, valp[idx].z);
-	}
 }
 
 void DRAW_POINTS(Associative_Array points, Dynamic_Array sel_points) {
