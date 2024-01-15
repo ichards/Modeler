@@ -97,9 +97,11 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
             float mouseangle = atan(mouse_movement.y / mouse_movement.x);
 
             if (mouse_movement.x == 0) {
-                mouseangle = M_PI / 2;
+                //mouseangle = M_PI / 2;
+                mouseangle = 3 * M_PI / 2;
                 if (mouse_movement.y < 0) {
-                    mouseangle *= -1;
+                    //mouseangle = 3 * M_PI / 2;
+                    mouseangle = M_PI / 2;
                 }
             }
 
@@ -112,7 +114,7 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
 
             printf("trans: %f\n", transfactor * genfactor * mouselength);
 
-            ((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += transfactor * genfactor * mouselength;
+            ((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += -1 * transfactor * genfactor * mouselength;
 
             //((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += 0;
 
