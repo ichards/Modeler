@@ -100,6 +100,10 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
 
             float transfactor = sin(mouseangle + (lineangle - (M_PI / 2)));
 
+            if (mouse_movement.x < 0) {
+                transfactor *= -1;
+            }
+
             float genfactor = 0.1;
             // TODO: convert slope to degrees/radians, and then get scalar value between 0 and 1 comparing line slope and mouse slope
 
