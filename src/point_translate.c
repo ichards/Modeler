@@ -77,7 +77,7 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
 
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
         if (select != -1) {
-            
+            /*
             static Vector2 old_mouse_pos = (Vector2) {0, 0};
 
             static Vector2 mouse_pos = (Vector2) {0, 0};
@@ -87,24 +87,34 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
             Vector2 mouse_movement = (Vector2) {old_mouse_pos.x - mouse_pos.x, old_mouse_pos.y - mouse_pos.y};
 
             old_mouse_pos = GetMousePosition();
+*/
 
+            Vector2 mouse_movement = GetMouseDelta();
             // axis is selected and user is clicking
             Vector2 line2d = Vector2Subtract(GetWorldToScreen(p1s[select], *data->main_camera), GetWorldToScreen(p2s[select], *data->main_camera));
             float lineangle = atan(line2d.y / line2d.x);
 
             float mouseangle = atan(mouse_movement.y / mouse_movement.x);
+
+            if (mouse_movement.x == 0) {
+                mouseangle = M_PI / 2;
+                if (mouse_movement.y < 0) {
+                    mouseangle *= -1;
+                }
+            }
+
             float mouselength = Vector2Length(mouse_movement);
 
             float transfactor = sin(mouseangle + (lineangle - (M_PI / 2)));
 
-            float genfactor = 0.00001;
+            float genfactor = 0.01;
             // TODO: convert slope to degrees/radians, and then get scalar value between 0 and 1 comparing line slope and mouse slope
 
-            printf("trans: %d\n", mouse_movement.x);
+            printf("trans: %f\n", transfactor * genfactor * mouselength);
 
-            //((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += transfactor * genfactor * mouselength;
+            ((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += transfactor * genfactor * mouselength;
 
-            ((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += 0;
+            //((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += 0;
 
             // temporary... ;)
             //((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += GetMouseDelta().x;
