@@ -43,15 +43,15 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
 
     // these are for getting slope when translating
     Vector3 p1s[] = {
-        V3(1, 0, 0),
-        V3(0, 1, 0),
-        V3(0, 0, 1)
+        Vector3Add(V3(1, 0, 0), state_point),
+        Vector3Add(V3(0, 1, 0), state_point),
+        Vector3Add(V3(0, 0, 1), state_point)
     };
 
     Vector3 p2s[] = {
-        V3(-1, 0, 0),
-        V3(0, -1, 0),
-        V3(0, 0, -1)
+        Vector3Add(V3(-1, 0, 0), state_point),
+        Vector3Add(V3(0, -1, 0), state_point),
+        Vector3Add(V3(0, 0, -1), state_point)
     };
 
     // selected axis
@@ -75,24 +75,15 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
         axis_colors[select] = WHITE;
     }
 
+    float lineangle = 0;
+
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
         if (select != -1) {
-            /*
-            static Vector2 old_mouse_pos = (Vector2) {0, 0};
-
-            static Vector2 mouse_pos = (Vector2) {0, 0};
-
-            mouse_pos = GetMousePosition();
-
-            Vector2 mouse_movement = (Vector2) {old_mouse_pos.x - mouse_pos.x, old_mouse_pos.y - mouse_pos.y};
-
-            old_mouse_pos = GetMousePosition();
-*/
-
+            
             Vector2 mouse_movement = GetMouseDelta();
             // axis is selected and user is clicking
             Vector2 line2d = Vector2Subtract(GetWorldToScreen(p1s[select], *data->main_camera), GetWorldToScreen(p2s[select], *data->main_camera));
-            float lineangle = atan(line2d.y / line2d.x);
+            lineangle = atan(line2d.y / line2d.x);
 
             float mouseangle = atan(mouse_movement.y / mouse_movement.x);
 
@@ -109,10 +100,10 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
 
             float transfactor = sin(mouseangle + (lineangle - (M_PI / 2)));
 
-            float genfactor = 0.01;
+            float genfactor = 0.1;
             // TODO: convert slope to degrees/radians, and then get scalar value between 0 and 1 comparing line slope and mouse slope
 
-            printf("trans: %f\n", transfactor * genfactor * mouselength);
+            //printf("trans: %f\n", transfactor * genfactor * mouselength);
 
             ((Vector3*)(data->points->vals.p))[data->general_data->trans_point].x += -1 * transfactor * genfactor * mouselength;
 
@@ -141,6 +132,8 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
     }
 
     
+	char buf[10];
+
 
 
 	DRAW_COMPASS(data->reference_render, data->mini_camera);
@@ -151,7 +144,15 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
 
 		DrawRectangle(10, 10, GetScreenWidth() - 20, GetScreenWidth() - 20, GRAY);
 
+        gcvt(lineangle * 180 / M_PI, 5, buf);
+        DrawText(buf, 20, 20, 30, BLACK);
+        gcvt(lineangle, 5, buf);
+        DrawText(buf, 20, 50, 30, BLACK);
+
         BeginMode3D(*data->main_camera);
+
+
+
 
             // DRAW MAIN GRID
             DrawSphere(x1, 0.3, RED);
@@ -160,6 +161,11 @@ void POINT_TRANSLATE_FUNCTION(program_data* data) {
             DrawSphere(y2, 0.3, GREEN);
             DrawSphere(z1, 0.3, BLUE);
             DrawSphere(z2, 0.3, BLUE);
+
+            if (select != -1) {
+                DrawSphere(p1s[select], 0.5, YELLOW);
+                DrawSphere(p2s[select], 0.5, YELLOW);
+            }
 
 			DRAW_POINTS(*(data->points), *(data->sel_points));
 
